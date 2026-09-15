@@ -63,5 +63,33 @@ public class Main {
         }
 
         System.out.println("\n========== KET THUC DEMO CRUD ==========");
+
+        // ===== TODO 0.9: KIEM CHUNG UNIQUE CONSTRAINT TREN EMAIL =====
+        System.out.println("\n========== TODO 0.9: DEMO UNIQUE EMAIL CONSTRAINT ==========\n");
+
+        Employee dup1 = new Employee(
+                "User 1", "trung@fpt.edu.vn",
+                new BigDecimal("10000000"), Gender.FEMALE, LocalDate.of(2023, 1, 15)
+        );
+        Employee dup2 = new Employee(
+                "User 2", "trung@fpt.edu.vn", // cung email — vi pham UNIQUE
+                new BigDecimal("11000000"), Gender.MALE, LocalDate.of(2023, 6, 1)
+        );
+
+        dao.save(dup1);
+        System.out.println("Luu dup1 thanh cong, id = " + dup1.getId());
+
+        try {
+            dao.save(dup2); // ky vong: nem exception vi unique constraint
+            System.out.println("LOI: Khong thay exception nhu ky vong!");
+        } catch (RuntimeException ex) {
+            System.out.println("Da bat duoc loi trung email nhu ky vong!");
+            System.out.println("Exception type : " + ex.getClass().getSimpleName());
+            System.out.println("Message        : " + ex.getMessage());
+        }
+
+        dao.delete(dup1.getId());
+        System.out.println("\nDa xoa dup1 sau khi demo.");
+        System.out.println("\n========== KET THUC DEMO UNIQUE CONSTRAINT ==========");
     }
 }
