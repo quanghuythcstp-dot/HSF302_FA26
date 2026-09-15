@@ -5,6 +5,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
+import java.util.List;
+
 public class EmployeeDAO {
 
     private static final EntityManagerFactory emf =
@@ -12,22 +14,46 @@ public class EmployeeDAO {
 
     // ---------- CREATE (TODO 0.3) ----------
 
-    /**
-     * Luu mot Employee moi xuong DB trong 1 transaction.
-     * Sau khi method return, e.getId() != null chung to entity da duoc INSERT.
-     */
     public void save(Employee e) {
-        // Truoc dong nay: e dang o trang thai NEW/TRANSIENT
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-            em.persist(e); // e chuyen sang MANAGED, se duoc INSERT khi commit
+            em.persist(e);
             em.getTransaction().commit();
         } catch (RuntimeException ex) {
             if (em.getTransaction().isActive()) em.getTransaction().rollback();
             throw ex;
         } finally {
-            em.close(); // sau dong nay: e tro thanh DETACHED
+            em.close();
+        }
+    }
+
+    // ---------- READ (TODO 0.4) ----------
+
+    /**
+     * Tim Employee theo id.
+     * Dung em.find() — tra ve null neu khong ton tai, khong nem exception.
+     */
+    public Employee findById(Long id) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            return em.find(Employee.class, id);
+        } finally {
+            em.close();
+        }
+    }
+
+    /**
+     * Lay toan bo danh sach Employee.
+     * Dung JPQL — khong phu thuoc vao ten bang cu the trong DB.
+     */
+    public List<Employee> findAll() {
+        EntityManager em = emf.createEntityManager();
+        try {
+            return em.createQuery("SELECT e FROM Employee e", Employee.class)
+                    .getResultList();
+        } finally {
+            em.close();
         }
     }
 }
