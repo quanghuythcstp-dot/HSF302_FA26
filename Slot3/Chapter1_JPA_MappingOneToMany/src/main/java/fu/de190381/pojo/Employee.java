@@ -37,6 +37,12 @@ public class Employee {
     @Column(nullable = false)
     private boolean active = true;
 
+    // Owning side: Employee giữ FK department_id
+    // FetchType.LAZY: không load Department ngay khi load Employee (tránh query thừa)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "department_id", nullable = false)
+    private Department department;
+
     // Constructor không tham số — bắt buộc cho JPA
     public Employee() {
     }
@@ -106,6 +112,14 @@ public class Employee {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
     }
 
     @Override
