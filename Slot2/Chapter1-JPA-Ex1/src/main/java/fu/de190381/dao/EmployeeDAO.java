@@ -52,10 +52,6 @@ public class EmployeeDAO {
 
     // ---------- READ co dieu kien (TODO 0.5) ----------
 
-    /**
-     * Tim Employee theo email — dung de kiem tra trung email truoc khi tao moi.
-     * Dung setParameter() tranh JPQL injection.
-     */
     public Employee findByEmail(String email) {
         EntityManager em = emf.createEntityManager();
         try {
@@ -70,9 +66,6 @@ public class EmployeeDAO {
         }
     }
 
-    /**
-     * Lay danh sach Employee co salary lon hon nguong VA dang active.
-     */
     public List<Employee> findBySalaryGreaterThanAndActive(BigDecimal minSalary) {
         EntityManager em = emf.createEntityManager();
         try {
@@ -82,6 +75,28 @@ public class EmployeeDAO {
                             Employee.class)
                     .setParameter("minSalary", minSalary)
                     .getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    // ---------- UPDATE (TODO 0.6) ----------
+
+    /**
+     * Cap nhat Employee da ton tai.
+     * e truyen vao co the dang DETACHED — merge() tra ve entity MANAGED moi.
+     * PHAI dung object tra ve, khong dung "e" cu.
+     */
+    public Employee update(Employee e) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            Employee merged = em.merge(e);
+            em.getTransaction().commit();
+            return merged;
+        } catch (RuntimeException ex) {
+            if (em.getTransaction().isActive()) em.getTransaction().rollback();
+            throw ex;
         } finally {
             em.close();
         }
