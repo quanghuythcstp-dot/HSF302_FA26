@@ -82,11 +82,6 @@ public class EmployeeDAO {
 
     // ---------- UPDATE (TODO 0.6) ----------
 
-    /**
-     * Cap nhat Employee da ton tai.
-     * e truyen vao co the dang DETACHED — merge() tra ve entity MANAGED moi.
-     * PHAI dung object tra ve, khong dung "e" cu.
-     */
     public Employee update(Employee e) {
         EntityManager em = emf.createEntityManager();
         try {
@@ -94,6 +89,29 @@ public class EmployeeDAO {
             Employee merged = em.merge(e);
             em.getTransaction().commit();
             return merged;
+        } catch (RuntimeException ex) {
+            if (em.getTransaction().isActive()) em.getTransaction().rollback();
+            throw ex;
+        } finally {
+            em.close();
+        }
+    }
+
+    // ---------- DELETE (TODO 0.7) ----------
+
+    /**
+     * Xoa Employee theo id.
+     * PHAI find() truoc — remove() chi hoat dong voi entity MANAGED.
+     */
+    public void delete(Long id) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            Employee e = em.find(Employee.class, id); // e dang MANAGED
+            if (e != null) {
+                em.remove(e); // e chuyen sang REMOVED, bi DELETE khi commit
+            }
+            em.getTransaction().commit();
         } catch (RuntimeException ex) {
             if (em.getTransaction().isActive()) em.getTransaction().rollback();
             throw ex;
