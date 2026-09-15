@@ -5,6 +5,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class EmployeeDAO {
@@ -30,10 +31,6 @@ public class EmployeeDAO {
 
     // ---------- READ (TODO 0.4) ----------
 
-    /**
-     * Tim Employee theo id.
-     * Dung em.find() — tra ve null neu khong ton tai, khong nem exception.
-     */
     public Employee findById(Long id) {
         EntityManager em = emf.createEntityManager();
         try {
@@ -43,14 +40,47 @@ public class EmployeeDAO {
         }
     }
 
-    /**
-     * Lay toan bo danh sach Employee.
-     * Dung JPQL — khong phu thuoc vao ten bang cu the trong DB.
-     */
     public List<Employee> findAll() {
         EntityManager em = emf.createEntityManager();
         try {
             return em.createQuery("SELECT e FROM Employee e", Employee.class)
+                    .getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    // ---------- READ co dieu kien (TODO 0.5) ----------
+
+    /**
+     * Tim Employee theo email — dung de kiem tra trung email truoc khi tao moi.
+     * Dung setParameter() tranh JPQL injection.
+     */
+    public Employee findByEmail(String email) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            List<Employee> result = em.createQuery(
+                            "SELECT e FROM Employee e WHERE e.email = :email",
+                            Employee.class)
+                    .setParameter("email", email)
+                    .getResultList();
+            return result.isEmpty() ? null : result.get(0);
+        } finally {
+            em.close();
+        }
+    }
+
+    /**
+     * Lay danh sach Employee co salary lon hon nguong VA dang active.
+     */
+    public List<Employee> findBySalaryGreaterThanAndActive(BigDecimal minSalary) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            return em.createQuery(
+                            "SELECT e FROM Employee e " +
+                            "WHERE e.salary > :minSalary AND e.active = true",
+                            Employee.class)
+                    .setParameter("minSalary", minSalary)
                     .getResultList();
         } finally {
             em.close();
