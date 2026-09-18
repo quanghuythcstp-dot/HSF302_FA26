@@ -36,8 +36,12 @@ public class Project {
     @Column(name = "end_date")
     private LocalDate endDate;
 
-    // Inverse side của quan hệ N-N — sẽ được mapping ở TODO 5.3
-    // Dùng HashSet để đảm bảo không trùng lặp (cần override equals/hashCode ở TODO 5.4)
+    // TODO 5.3 — Inverse side của quan hệ N-N với Employee.
+    // mappedBy = "projects" trỏ đúng tên field trong Employee (owning side).
+    // Inverse side KHÔNG tạo bảng trung gian — chỉ để navigate ngược từ Project → Employee.
+    // Không dùng cascade = ALL ở N-N vì tránh xóa nhầm entity phía bên kia:
+    //   ví dụ xóa 1 Project không được kéo theo xóa Employee.
+    @ManyToMany(mappedBy = "projects")
     private Set<Employee> employees = new HashSet<>();
 
     // Constructor không tham số — bắt buộc cho JPA
