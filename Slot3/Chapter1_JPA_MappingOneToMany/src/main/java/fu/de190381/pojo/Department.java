@@ -70,6 +70,24 @@ public class Department {
         this.employees = employees;
     }
 
+    /**
+     * Helper method đồng bộ 2 chiều: thêm Employee vào Department.
+     * Gán cả department cho employee để 2 phía luôn nhất quán trong memory.
+     */
+    public void addEmployee(Employee e) {
+        this.employees.add(e);
+        e.setDepartment(this);
+    }
+
+    /**
+     * Helper method đồng bộ 2 chiều: xóa Employee khỏi Department.
+     * Đặt department = null để tránh dữ liệu lơ lửng trong memory.
+     */
+    public void removeEmployee(Employee e) {
+        this.employees.remove(e);
+        e.setDepartment(null);
+    }
+
     @Override
     public String toString() {
         return "Department{id=" + id + ", name='" + name + "', location='" + location + "'}";
