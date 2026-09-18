@@ -148,6 +148,16 @@ public class Employee {
                 + "}";
     }
 
+    // TODO 5.5 — Helper method đồng bộ 2 chiều khi phân công nhân viên vào dự án.
+    // Phải add vào CẢ 2 phía để in-memory object nhất quán ngay lập tức,
+    // không cần reload từ DB mới thấy quan hệ ngược chiều.
+    // Lưu ý: chỉ cần gọi method này 1 lần từ owning side (Employee),
+    // KHÔNG gọi thêm p.getEmployees().add(this) ở chỗ khác để tránh thêm 2 lần.
+    public void assignToProject(Project p) {
+        this.projects.add(p);         // owning side: Employee → Project
+        p.getEmployees().add(this);   // inverse side: Project → Employee (đồng bộ in-memory)
+    }
+
     // TODO 5.4 — Dùng business key (email) thay vì id cho equals/hashCode.
     // Lý do KHÔNG dùng id:
     //   - Entity mới chưa persist có id = null → 2 object khác nhau sẽ bằng nhau (sai).
