@@ -95,4 +95,39 @@ public class DepartmentDAO {
             em.close();
         }
     }
+
+    /**
+     * TODO2.6 — Lấy 1 Department kèm danh sách Employee trong 1 câu SQL (JOIN FETCH).
+     * Sau khi đóng EntityManager, truy cập employees vẫn không bị LazyInitializationException
+     * vì dữ liệu đã được load ngay trong cùng 1 query.
+     */
+    public Department findByIdWithEmployees(Long id) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            return em.createQuery(
+                    "SELECT d FROM Department d JOIN FETCH d.employees WHERE d.id = :id",
+                    Department.class)
+                    .setParameter("id", id)
+                    .getSingleResult();
+        } finally {
+            em.close();
+        }
+    }
+
+    /**
+     * TODO2.9 — Lấy toàn bộ Department kèm Employee bằng JOIN FETCH (fix N+1).
+     * DISTINCT để tránh duplicate Department khi JOIN.
+     * Chi con 1 cau SQL thay vi 1+N cau nhu findAll().
+     */
+    public List<Department> findAllWithEmployees() {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            return em.createQuery(
+                    "SELECT DISTINCT d FROM Department d JOIN FETCH d.employees",
+                    Department.class)
+                    .getResultList();
+        } finally {
+            em.close();
+        }
+    }
 }
