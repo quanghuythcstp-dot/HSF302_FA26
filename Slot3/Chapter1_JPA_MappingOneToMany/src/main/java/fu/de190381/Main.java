@@ -71,6 +71,20 @@ public class Main {
         }
         System.out.println("--- Ket thuc N+1: tong so cau SQL = 1 + N = 3 cau ---");
 
+        // ============================================================
+        // TODO 2.9 — Fix N+1 bằng JOIN FETCH
+        // findAllWithEmployees() dùng SELECT DISTINCT d FROM Department d JOIN FETCH d.employees
+        // Kết quả: chỉ còn 1 câu SQL duy nhất (có JOIN) thay vì 1+N câu
+        // ============================================================
+        System.out.println("\n=== TODO 2.9: Fix N+1 bang JOIN FETCH (xem SQL log) ===");
+        System.out.println("--- Bat dau fix: chi 1 cau SQL SELECT voi JOIN ---");
+        for (Department d : departmentDAO.findAllWithEmployees()) {
+            System.out.println("Dept: " + d.getName()
+                    + " | So nhan vien: " + d.getEmployees().size());
+        }
+        System.out.println("--- Ket thuc fix: chi con 1 cau SQL (co JOIN FETCH) ---");
+        System.out.println("So sanh: truoc fix (N+1) = 3 cau | sau fix = 1 cau JOIN FETCH");
+
         JPAUtil.close();
     }
 }
