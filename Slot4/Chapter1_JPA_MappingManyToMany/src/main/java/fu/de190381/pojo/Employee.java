@@ -41,8 +41,19 @@ public class Employee {
     @Column(nullable = false)
     private boolean active = true;
 
-    // Quan hệ N-N với Project — sẽ được mapping ở TODO 5.2
-    // Dùng HashSet để đảm bảo không trùng lặp (cần override equals/hashCode ở TODO 5.4)
+    // TODO 5.2 — Owning side của quan hệ N-N với Project.
+    // Employee giữ bảng trung gian employee_project với 2 FK:
+    //   employee_id → trỏ về bảng employees (joinColumns)
+    //   project_id  → trỏ về bảng projects  (inverseJoinColumns)
+    // Không dùng cascade = ALL ở N-N vì tránh xóa nhầm entity phía bên kia:
+    //   ví dụ xóa 1 Employee không được kéo theo xóa Project.
+    // FetchType mặc định của @ManyToMany là LAZY — giữ nguyên để tránh query thừa.
+    @ManyToMany
+    @JoinTable(
+        name = "employee_project",
+        joinColumns = @JoinColumn(name = "employee_id"),
+        inverseJoinColumns = @JoinColumn(name = "project_id")
+    )
     private Set<Project> projects = new HashSet<>();
 
     // Constructor không tham số — bắt buộc cho JPA
