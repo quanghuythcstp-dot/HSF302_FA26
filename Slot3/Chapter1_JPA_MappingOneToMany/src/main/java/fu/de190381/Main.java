@@ -46,6 +46,31 @@ public class Main {
             System.out.println("  - " + e);
         }
 
+        // ============================================================
+        // TODO 2.8 — Tái hiện N+1 Query Problem
+        // Bật hibernate.show_sql=true trong persistence.xml để đếm SQL
+        // Kết quả: 1 câu SELECT departments + N câu SELECT employees
+        // (mỗi lần truy cập .getEmployees() của 1 dept khác nhau = 1 query)
+        // ============================================================
+        System.out.println("\n=== TODO 2.8: N+1 Query Problem (xem SQL log) ===");
+
+        // Thêm 1 department IT để có N = 2 departments -> tổng 1+2 = 3 câu SQL
+        Department it = new Department("IT", "Ho Chi Minh");
+        Employee e4 = new Employee("dd.pham@company.com", "Pham Van D", Gender.MALE,
+                new BigDecimal("20000000"), LocalDate.of(2020, 5, 20));
+        it.addEmployee(e4);
+        departmentDAO.save(it);
+
+        System.out.println("--- Bat dau N+1: 1 cau SELECT departments + N cau SELECT employees ---");
+        // findAll() = 1 SQL
+        // d.getEmployees().size() moi dept = 1 SQL (LAZY load)
+        // Tong: 1 + N cau (N = 2 departments -> 3 cau SQL)
+        for (Department d : departmentDAO.findAll()) {
+            System.out.println("Dept: " + d.getName()
+                    + " | So nhan vien: " + d.getEmployees().size());
+        }
+        System.out.println("--- Ket thuc N+1: tong so cau SQL = 1 + N = 3 cau ---");
+
         JPAUtil.close();
     }
 }
