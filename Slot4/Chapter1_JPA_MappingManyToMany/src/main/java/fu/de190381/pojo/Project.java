@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -130,5 +131,27 @@ public class Project {
                 + ", startDate=" + startDate
                 + ", endDate=" + endDate
                 + "}";
+    }
+
+    // TODO 5.4 — Dùng business key (projectCode) thay vì id cho equals/hashCode.
+    // Lý do KHÔNG dùng id:
+    //   - Entity mới chưa persist có id = null → 2 object khác nhau sẽ bằng nhau (sai).
+    //   - Khi entity được thêm vào HashSet trước khi persist, id = null,
+    //     sau persist id được gán → hashCode thay đổi → Set không tìm được phần tử (sai).
+    // Lý do dùng projectCode:
+    //   - projectCode là unique + not null → đảm bảo phân biệt đúng mọi Project.
+    //   - Dùng Set<Project> trong Employee.projects sẽ hoạt động đúng:
+    //     thêm cùng 1 Project 2 lần (cùng projectCode, khác object) → Set chỉ giữ 1 phần tử.
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Project)) return false;
+        Project other = (Project) o;
+        return Objects.equals(this.projectCode, other.projectCode);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(projectCode);
     }
 }

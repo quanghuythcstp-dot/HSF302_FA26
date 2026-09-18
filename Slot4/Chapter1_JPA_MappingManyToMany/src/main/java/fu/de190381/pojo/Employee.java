@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -145,5 +146,27 @@ public class Employee {
                 + ", gender=" + gender
                 + ", active=" + active
                 + "}";
+    }
+
+    // TODO 5.4 — Dùng business key (email) thay vì id cho equals/hashCode.
+    // Lý do KHÔNG dùng id:
+    //   - Entity mới chưa persist có id = null → 2 object khác nhau sẽ bằng nhau (sai).
+    //   - Khi entity được thêm vào HashSet trước khi persist, id = null,
+    //     sau persist id được gán → hashCode thay đổi → Set không tìm được phần tử (sai).
+    // Lý do dùng email:
+    //   - email là unique + not null → đảm bảo phân biệt đúng mọi Employee.
+    //   - Dùng Set<Employee> trong Project.employees sẽ hoạt động đúng:
+    //     thêm cùng 1 Employee 2 lần (cùng email, khác object) → Set chỉ giữ 1 phần tử.
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Employee)) return false;
+        Employee other = (Employee) o;
+        return Objects.equals(this.email, other.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(email);
     }
 }
