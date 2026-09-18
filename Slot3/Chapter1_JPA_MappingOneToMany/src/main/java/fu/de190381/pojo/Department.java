@@ -1,10 +1,12 @@
 package fu.de190381.pojo;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Entity đại diện cho phòng ban trong công ty.
- * Quan hệ 1-N với Employee (inverse side).
+ * Inverse side của quan hệ 1-N với Employee.
  */
 @Entity
 @Table(name = "departments")
@@ -19,6 +21,12 @@ public class Department {
 
     @Column
     private String location;
+
+    // Inverse side: mappedBy trỏ đúng tên field "department" trong Employee
+    // cascade = ALL: persist/merge/remove Department sẽ áp dụng luôn cho Employee
+    // orphanRemoval = true: xóa Employee khỏi list thì xóa luôn trong DB
+    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Employee> employees = new ArrayList<>();
 
     // Constructor không tham số — bắt buộc cho JPA
     public Department() {
@@ -52,6 +60,14 @@ public class Department {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public List<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(List<Employee> employees) {
+        this.employees = employees;
     }
 
     @Override
