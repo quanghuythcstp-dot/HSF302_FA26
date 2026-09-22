@@ -88,6 +88,21 @@ public class Main {
         printProjectEmployees(projectA.getId());
         printProjectEmployees(projectB.getId());
 
+        // ============================================================
+        // TODO 5.8 — JPQL đếm số nhân viên active và tổng salary theo project
+        // ============================================================
+        System.out.println("\n=== TODO 5.8: Dem nhan vien active va tong salary theo project ===\n");
+
+        java.util.List<Object[]> stats = projectDAO.countActiveEmployeesAndSalaryByProject();
+        System.out.printf("%-20s %15s %20s%n", "Project", "So NV active", "Tong Salary");
+        System.out.println("-".repeat(58));
+        for (Object[] row : stats) {
+            String projectName  = (String) row[0];
+            Long count          = (Long) row[1];
+            java.math.BigDecimal totalSalary = (java.math.BigDecimal) row[2];
+            System.out.printf("%-20s %15d %20s%n", projectName, count, totalSalary);
+        }
+
         JPAUtil.close();
     }
 
