@@ -198,4 +198,51 @@ public class EmployeeDAO {
             em.close();
         }
     }
+
+    /**
+     * TODO 5.11 — Deactivate Employee (set active = false) khi nhân viên nghỉ việc.
+     *
+     * Câu hỏi: nhân viên nghỉ việc có nên tự động bị gỡ khỏi tất cả project không?
+     *
+     * KHÔNG nên dùng cascade REMOVE tự động vì:
+     * 1. Dữ liệu lịch sử: quan hệ trong employee_project vẫn cần để tra cứu
+     *    nhân viên đã từng tham gia project nào (báo cáo, audit log).
+     * 2. Cascade REMOVE ở N-N rất nguy hiểm: có thể kéo theo xóa nhầm Project
+     *    nếu cấu hình sai.
+     * 3. Business rule: việc "nghỉ việc" (deactivate) và việc "rời project"
+     *    là 2 hành động khác nhau, nên tách biệt và xử lý có chủ đích.
+     *
+     * Cách xử lý phù hợp:
+     * - Chỉ set active = false → nhân viên không xuất hiện trong query active.
+     * - Dữ liệu employee_project giữ nguyên để tra cứu lịch sử.
+     * - Nếu muốn gỡ khỏi project, gọi unassignEmployeeFromProject() riêng biệt
+     *   sau khi deactivate, có chủ đích và kiểm soát được.
+     *
+     * @param employeeId id của Employee cần deactivate
+     * @throws IllegalArgumentException nếu Employee không tồn tại
+     */
+    public void deactivateEmployee(Long employeeId) {
+        EntityManager em = JPAUtil.getEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+
+            Employee employee = em.find(Employee.class, employeeId);
+            if (employee == null) {
+                throw new IllegalArgumentException("Employee not found with id: " + employeeId);
+            }
+
+            // Chỉ set active = false, KHÔNG xóa quan hệ trong employee_project
+            // Dữ liệu tham gia project vẫn còn để tra cứu lịch sử
+            employee.setActive(false);
+
+            // Hibernate tự detect thay đổi (dirty checking) và UPDATE khi commit
+            tx.commit();
+        } catch (Exception e) {
+            if (tx.isActive()) tx.rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
 }

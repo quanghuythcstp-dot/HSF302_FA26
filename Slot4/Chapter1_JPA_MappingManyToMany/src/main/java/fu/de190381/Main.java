@@ -163,6 +163,43 @@ public class Main {
             System.out.printf("%-20s %15d %20s%n", projectName, count, totalSalary);
         }
 
+        // ============================================================
+        // TODO 5.11 — deactivateEmployee: set active = false cho NV3 (Chi)
+        // Xác nhận: cột active = false, dữ liệu employee_project vẫn còn
+        // ============================================================
+        System.out.println("\n=== TODO 5.11: Deactivate NV3 (Chi) ===\n");
+
+        // Trước khi deactivate
+        Employee chiBefore = employeeDAO.findById(nv3.getId());
+        System.out.println("Truoc khi deactivate: " + chiBefore.getFullName()
+                + " | active = " + chiBefore.isActive());
+
+        // Deactivate NV3 — chỉ set active = false, KHÔNG gỡ khỏi project
+        employeeDAO.deactivateEmployee(nv3.getId());
+
+        // Sau khi deactivate: active = false, nhưng employee_project vẫn còn
+        Employee chiAfter = employeeDAO.findById(nv3.getId());
+        System.out.println("Sau khi deactivate: " + chiAfter.getFullName()
+                + " | active = " + chiAfter.isActive());
+
+        // Xác nhận dữ liệu employee_project vẫn còn (dùng native query đếm)
+        jakarta.persistence.EntityManager emNative = JPAUtil.getEntityManager();
+        try {
+            Long count = (Long) emNative.createQuery(
+                    "SELECT COUNT(e) FROM Employee e JOIN e.projects p WHERE e.id = :id")
+                    .setParameter("id", nv3.getId())
+                    .getSingleResult();
+            System.out.println("So dong trong employee_project cua NV3: " + count
+                    + " (du lieu lich su van con, khong bi xoa)");
+        } finally {
+            emNative.close();
+        }
+
+        // Xác nhận NV3 không còn xuất hiện trong query active (TODO 5.10)
+        java.util.List<Employee> activeMulti = employeeDAO.findActiveEmployeesInMultipleProjects();
+        System.out.println("\nQuery active employees in multiple projects sau deactivate NV3:");
+        activeMulti.forEach(e -> System.out.println("  - " + e.getFullName() + " (active=" + e.isActive() + ")"));
+
         JPAUtil.close();
     }
 
