@@ -176,4 +176,26 @@ public class EmployeeDAO {
             em.close();
         }
     }
+
+    /**
+     * TODO 5.10 — Tìm các Employee active đang tham gia nhiều hơn 1 project.
+     * JPQL:
+     *   SELECT e FROM Employee e WHERE e.active = true AND SIZE(e.projects) > 1
+     *
+     * SIZE() là hàm JPQL trả về số phần tử trong collection,
+     * không cần JOIN hay GROUP BY — Hibernate tự sinh subquery đếm.
+     *
+     * @return danh sách Employee active tham gia hơn 1 project
+     */
+    public List<Employee> findActiveEmployeesInMultipleProjects() {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            return em.createQuery(
+                    "SELECT e FROM Employee e WHERE e.active = true AND SIZE(e.projects) > 1",
+                    Employee.class)
+                    .getResultList();
+        } finally {
+            em.close();
+        }
+    }
 }

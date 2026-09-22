@@ -131,6 +131,24 @@ public class Main {
         printProjectEmployees(projectB.getId());
 
         // ============================================================
+        // TODO 5.10 — JPQL tìm Employee active tham gia hơn 1 project
+        // ============================================================
+        System.out.println("\n=== TODO 5.10: Tim nhan vien active tham gia nhieu hon 1 project ===\n");
+
+        // Sau khi gỡ NV2 khỏi Project B ở TODO 5.9:
+        // - NV1 (An): còn Project A + B → SIZE = 2 → thỏa điều kiện
+        // - NV2 (Binh): đã bị gỡ khỏi B → SIZE = 0 → không thỏa
+        // - NV3 (Chi): chỉ có Project A → SIZE = 1 → không thỏa
+        java.util.List<Employee> multiProjectEmps = employeeDAO.findActiveEmployeesInMultipleProjects();
+        if (multiProjectEmps.isEmpty()) {
+            System.out.println("  Khong co nhan vien nao tham gia nhieu hon 1 project.");
+        } else {
+            System.out.println("  Nhan vien active tham gia nhieu hon 1 project:");
+            multiProjectEmps.forEach(e ->
+                System.out.println("  - " + e.getFullName() + " (email: " + e.getEmail() + ")"));
+        }
+
+        // ============================================================
         // TODO 5.8 — JPQL đếm số nhân viên active và tổng salary theo project
         // ============================================================
         System.out.println("\n=== TODO 5.8: Dem nhan vien active va tong salary theo project ===\n");
