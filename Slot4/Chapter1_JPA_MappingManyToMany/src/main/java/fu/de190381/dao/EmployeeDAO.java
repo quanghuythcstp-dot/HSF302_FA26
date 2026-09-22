@@ -136,4 +136,44 @@ public class EmployeeDAO {
             em.close();
         }
     }
+
+    /**
+     * TODO 5.9 — Gỡ Employee khỏi Project trong 1 transaction duy nhất.
+     * Find cả 2 entity trong cùng 1 EntityManager, gọi unassignFromProject()
+     * để đồng bộ 2 chiều.
+     * Hibernate sẽ tự DELETE dòng tương ứng trong bảng employee_project khi commit.
+     * Employee và Project gốc KHÔNG bị xóa.
+     *
+     * @param employeeId id của Employee cần gỡ
+     * @param projectId  id của Project cần gỡ khỏi
+     * @throws IllegalArgumentException nếu Employee hoặc Project không tồn tại
+     */
+    public void unassignEmployeeFromProject(Long employeeId, Long projectId) {
+        EntityManager em = JPAUtil.getEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+
+            Employee employee = em.find(Employee.class, employeeId);
+            if (employee == null) {
+                throw new IllegalArgumentException("Employee not found with id: " + employeeId);
+            }
+
+            Project project = em.find(Project.class, projectId);
+            if (project == null) {
+                throw new IllegalArgumentException("Project not found with id: " + projectId);
+            }
+
+            // Gọi helper method gỡ 2 chiều (TODO 5.9)
+            // Hibernate sẽ tự DELETE khỏi bảng employee_project khi commit
+            employee.unassignFromProject(project);
+
+            tx.commit();
+        } catch (Exception e) {
+            if (tx.isActive()) tx.rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
 }

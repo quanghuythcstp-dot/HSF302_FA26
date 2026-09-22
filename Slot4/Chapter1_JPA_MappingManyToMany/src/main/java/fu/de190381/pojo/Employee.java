@@ -158,6 +158,15 @@ public class Employee {
         p.getEmployees().add(this);   // inverse side: Project → Employee (đồng bộ in-memory)
     }
 
+    // TODO 5.9 — Helper method đồng bộ 2 chiều khi gỡ nhân viên khỏi dự án.
+    // Phải remove khỏi CẢ 2 phía để in-memory object nhất quán ngay lập tức.
+    // Hibernate sẽ tự DELETE dòng tương ứng trong bảng employee_project khi commit.
+    // Không xóa Employee hay Project gốc — chỉ xóa liên kết trong bảng trung gian.
+    public void unassignFromProject(Project p) {
+        this.projects.remove(p);      // owning side: Employee → Project
+        p.getEmployees().remove(this); // inverse side: Project → Employee (đồng bộ in-memory)
+    }
+
     // TODO 5.4 — Dùng business key (email) thay vì id cho equals/hashCode.
     // Lý do KHÔNG dùng id:
     //   - Entity mới chưa persist có id = null → 2 object khác nhau sẽ bằng nhau (sai).

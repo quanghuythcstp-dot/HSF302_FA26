@@ -89,6 +89,48 @@ public class Main {
         printProjectEmployees(projectB.getId());
 
         // ============================================================
+        // TODO 5.9 — unassignFromProject: gỡ NV2 (Binh) khỏi Project B
+        // Xác nhận bảng employee_project mất đúng 1 dòng,
+        // Employee và Project gốc vẫn còn nguyên.
+        // ============================================================
+        System.out.println("\n=== TODO 5.9: Unassign NV2 (Binh) khoi Project B ===\n");
+
+        // Trước khi gỡ: in số dòng trong employee_project liên quan đến NV2
+        System.out.println("Truoc khi go:");
+        printEmployeeProjects(nv2.getId());
+
+        // Gỡ NV2 khỏi Project B
+        employeeDAO.unassignEmployeeFromProject(nv2.getId(), projectB.getId());
+        System.out.println("\nDa go " + nv2.getFullName() + " khoi " + projectB.getProjectName());
+
+        // Sau khi gỡ: xác nhận NV2 không còn project nào
+        System.out.println("\nSau khi go:");
+        // NV2 đã không còn project → dùng findById để kiểm tra
+        jakarta.persistence.EntityManager emCheck = JPAUtil.getEntityManager();
+        try {
+            java.util.List<Employee> emps = emCheck.createQuery(
+                    "SELECT e FROM Employee e LEFT JOIN FETCH e.projects WHERE e.id = :id",
+                    Employee.class)
+                    .setParameter("id", nv2.getId())
+                    .getResultList();
+            if (!emps.isEmpty()) {
+                Employee binh = emps.get(0);
+                System.out.println("  " + binh.getFullName() + " hien tham gia: "
+                        + (binh.getProjects().isEmpty() ? "(khong co project nao)" : binh.getProjects()));
+            }
+        } finally {
+            emCheck.close();
+        }
+
+        // Xác nhận Project B vẫn còn (không bị xóa theo)
+        Project checkProjectB = projectDAO.findById(projectB.getId());
+        System.out.println("  " + checkProjectB.getProjectName() + " van con trong DB (id=" + checkProjectB.getId() + ")");
+
+        // Xác nhận Project B vẫn còn NV1 (An)
+        System.out.println("\nProject B sau khi go NV2:");
+        printProjectEmployees(projectB.getId());
+
+        // ============================================================
         // TODO 5.8 — JPQL đếm số nhân viên active và tổng salary theo project
         // ============================================================
         System.out.println("\n=== TODO 5.8: Dem nhan vien active va tong salary theo project ===\n");
