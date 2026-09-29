@@ -7,7 +7,6 @@ import com.hsf302.ch4.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -52,5 +51,24 @@ public class DepartmentServiceImpl implements DepartmentService {
     public Department getWithStudents(String code) {
         return departmentRepository.findByCodeWithStudents(code)
                 .orElseThrow(() -> new IllegalArgumentException("Department not found: " + code));
+    }
+
+    // TODO 22
+    @Override
+    @Transactional
+    public int transferStudentsAndDelete(String fromCode, String toCode) {
+        if (fromCode.equals(toCode)) throw new IllegalArgumentException("2 khoa phải khác nhau");
+        Department from = departmentRepository.findByCode(fromCode)
+                .orElseThrow(() -> new IllegalArgumentException("Department not found: " + fromCode));
+        Department to = departmentRepository.findByCode(toCode)
+                .orElseThrow(() -> new IllegalArgumentException("Department not found: " + toCode));
+        int transferred = studentRepository.transferStudents(from, to);
+        departmentRepository.deleteById(from.getId());
+        return transferred;
+    }
+
+    @Override
+    public List<Department> findAll() {
+        return departmentRepository.findAll();
     }
 }

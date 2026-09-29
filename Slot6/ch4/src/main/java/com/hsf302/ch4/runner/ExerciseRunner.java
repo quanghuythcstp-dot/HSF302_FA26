@@ -232,6 +232,14 @@ public class ExerciseRunner implements CommandLineRunner {
         System.out.println("Rows affected: " + affected);
         System.out.println("Active còn lại: " + studentService.countActive());
     }
-    private void todo22() { title("TODO 22: transfer students + delete department"); }
+    private void todo22() {
+        title("TODO 22: transfer students + delete department");
+
+        // chuyển toàn bộ student IA sang SE, xóa IA trong 1 transaction
+        int transferred = departmentService.transferStudentsAndDelete("IA", "SE");
+        System.out.println("Transferred: " + transferred + " students");
+        System.out.println("SE now has: " + studentService.countByDepartment("SE") + " students");
+        printList("Departments remaining", departmentService.findAll());
+    }
     private void todo23() { title("TODO 23: derived delete inactive"); }
 }
