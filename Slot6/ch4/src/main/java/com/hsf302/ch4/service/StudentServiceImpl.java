@@ -127,4 +127,10 @@ public class StudentServiceImpl implements StudentService {
         if (kw == null || kw.isBlank()) return List.of();
         return studentRepository.searchByKeyword(kw);
     }
+
+    // TODO 15
+    @Override
+    public List<Student> findAboveAverageGpa() {
+        return studentRepository.findAboveAverageGpa();
+    }
 }

@@ -48,4 +48,8 @@ public interface StudentRepository extends JpaRepository<Student, Long>,
            "FROM Department d LEFT JOIN d.students s " +
            "GROUP BY d.code, d.name ORDER BY d.code")
     List<com.hsf302.ch4.dto.DepartmentStatDTO> getDepartmentStatistics();
+
+    // TODO 15
+    @Query("SELECT s FROM Student s WHERE s.gpa > (SELECT AVG(st.gpa) FROM Student st) ORDER BY s.gpa DESC")
+    List<Student> findAboveAverageGpa();
 }

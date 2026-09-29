@@ -153,7 +153,12 @@ public class ExerciseRunner implements CommandLineRunner {
                         s.avgGpa() == null ? "null" : String.format("%.3f", s.avgGpa()))
         );
     }
-    private void todo15() { title("TODO 15: subquery AVG"); }
+    private void todo15() {
+        title("TODO 15: subquery AVG");
+
+        // tìm student có GPA lớn hơn GPA trung bình toàn bộ
+        printList("Students above average GPA", studentService.findAboveAverageGpa());
+    }
     private void todo16() { title("TODO 16: LazyInitializationException + JOIN FETCH"); }
     private void todo17() { title("TODO 17: native query TOP N"); }
     private void todo18() { title("TODO 18: interface projection"); }
