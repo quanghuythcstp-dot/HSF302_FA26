@@ -97,7 +97,13 @@ public class ExerciseRunner implements CommandLineRunner {
         // (c) countByActiveTrue
         System.out.println("Active students: " + studentService.countActive());
     }
-    private void todo9()  { title("TODO 9: ContainingIgnoreCase / EndingWith / IsNull"); }
+    private void todo9() {
+        title("TODO 9: ContainingIgnoreCase / EndingWith / IsNull");
+
+        printList("searchByName(\"nguyen\")", studentService.searchByName("nguyen"));
+        printList("findByEmailDomain(\"@gmail.com\")", studentService.findByEmailDomain("@gmail.com"));
+        printList("findWithoutEmail()", studentService.findWithoutEmail());
+    }
     private void todo10() { title("TODO 10: Between / And+True / After"); }
     private void todo11() { title("TODO 11: nested property / Top / IsEmpty"); }
 
