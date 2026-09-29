@@ -184,7 +184,15 @@ public class ExerciseRunner implements CommandLineRunner {
         // lấy top 2 GPA cao nhất của department SE bằng native SQL (SQL Server TOP)
         printList("Top 2 students in SE (native SQL)", studentService.findTopNInDepartment("SE", 2));
     }
-    private void todo18() { title("TODO 18: interface projection"); }
+    private void todo18() {
+        title("TODO 18: interface projection");
+
+        // danh sách student active gồm studentCode, fullName, gpa, tên department
+        studentService.getActiveSummaries().forEach(s ->
+                System.out.printf("   %-6s | %-20s | %.1f | %s%n",
+                        s.getStudentCode(), s.getFullName(), s.getGpa(), s.getDepartmentName())
+        );
+    }
     private void todo19() { title("TODO 19: @Query + Pageable"); }
 
     // ===== Bonus =====

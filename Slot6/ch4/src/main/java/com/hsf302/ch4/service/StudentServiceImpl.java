@@ -140,4 +140,10 @@ public class StudentServiceImpl implements StudentService {
         if (n <= 0) throw new IllegalArgumentException("n phải > 0");
         return studentRepository.findTopNInDepartment(deptCode, n);
     }
+
+    // TODO 18
+    @Override
+    public List<com.hsf302.ch4.dto.StudentSummary> getActiveSummaries() {
+        return studentRepository.findActiveSummaries();
+    }
 }
