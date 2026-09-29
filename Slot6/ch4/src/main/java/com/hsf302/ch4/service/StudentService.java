@@ -40,4 +40,7 @@ public interface StudentService {
 
     // TODO 12
     List<Student> findGoodStudents(String deptCode, double minGpa);
+
+    // TODO 13
+    List<Student> searchByKeyword(String kw);
 }
