@@ -193,7 +193,17 @@ public class ExerciseRunner implements CommandLineRunner {
                         s.getStudentCode(), s.getFullName(), s.getGpa(), s.getDepartmentName())
         );
     }
-    private void todo19() { title("TODO 19: @Query + Pageable"); }
+    private void todo19() {
+        title("TODO 19: @Query + Pageable");
+
+        // phân trang student active của SE, mỗi trang 2, sắp xếp GPA giảm dần
+        Page<Student> page0 = studentService.findActiveByDepartment("SE", 0, 2);
+        printList("SE active - page 0", page0.getContent());
+        System.out.println("totalElements=" + page0.getTotalElements() + ", totalPages=" + page0.getTotalPages());
+
+        Page<Student> page1 = studentService.findActiveByDepartment("SE", 1, 2);
+        printList("SE active - page 1", page1.getContent());
+    }
 
     // ===== Bonus =====
     private void todo24() { title("TODO 24: Specification"); }

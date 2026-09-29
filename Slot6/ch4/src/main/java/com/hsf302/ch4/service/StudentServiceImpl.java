@@ -146,4 +146,14 @@ public class StudentServiceImpl implements StudentService {
     public List<com.hsf302.ch4.dto.StudentSummary> getActiveSummaries() {
         return studentRepository.findActiveSummaries();
     }
+
+    // TODO 19
+    @Override
+    public Page<Student> findActiveByDepartment(String deptCode, int pageIndex, int size) {
+        if (pageIndex < 0 || size <= 0) {
+            throw new IllegalArgumentException("pageIndex phải >= 0 và size phải > 0");
+        }
+        Pageable pageable = PageRequest.of(pageIndex, size);
+        return studentRepository.findActiveByDepartment(deptCode, pageable);
+    }
 }
