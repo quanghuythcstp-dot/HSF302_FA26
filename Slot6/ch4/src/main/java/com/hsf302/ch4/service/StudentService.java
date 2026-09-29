@@ -66,4 +66,7 @@ public interface StudentService {
 
     // TODO 20
     Student updateGpa(String code, double newGpa);
+
+    // TODO 21
+    int deactivateLowGpa(double threshold);
 }

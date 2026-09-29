@@ -175,7 +175,14 @@ public class StudentServiceImpl implements StudentService {
         if (newGpa < 0 || newGpa > 4) throw new IllegalArgumentException("GPA phải trong khoảng [0, 4]");
         Student s = studentRepository.findByStudentCode(code)
                 .orElseThrow(() -> new IllegalArgumentException("Student not found: " + code));
-        s.setGpa(newGpa);  // dirty checking → Hibernate tự UPDATE khi transaction commit
+        s.setGpa(newGpa);
         return s;
+    }
+
+    // TODO 21
+    @Override
+    @Transactional
+    public int deactivateLowGpa(double threshold) {
+        return studentRepository.deactivateLowGpa(threshold);
     }
 }

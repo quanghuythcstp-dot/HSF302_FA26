@@ -224,7 +224,14 @@ public class ExerciseRunner implements CommandLineRunner {
         Student updated = studentService.updateGpa("SE001", 3.4);
         System.out.println("SE001 after update: " + updated);
     }
-    private void todo21() { title("TODO 21: @Modifying UPDATE"); }
+    private void todo21() {
+        title("TODO 21: @Modifying UPDATE");
+
+        // deactivate student active có GPA < 2.5
+        int affected = studentService.deactivateLowGpa(2.5);
+        System.out.println("Rows affected: " + affected);
+        System.out.println("Active còn lại: " + studentService.countActive());
+    }
     private void todo22() { title("TODO 22: transfer students + delete department"); }
     private void todo23() { title("TODO 23: derived delete inactive"); }
 }
