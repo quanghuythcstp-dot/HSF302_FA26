@@ -130,7 +130,12 @@ public class ExerciseRunner implements CommandLineRunner {
     }
 
     // ===== Part D =====
-    private void todo12() { title("TODO 12: JPQL + named parameter"); }
+    private void todo12() {
+        title("TODO 12: JPQL + named parameter");
+
+        // tìm sinh viên SE có GPA >= 3.0, sắp xếp GPA giảm dần
+        printList("Good students in SE (GPA >= 3.0)", studentService.findGoodStudents("SE", 3.0));
+    }
     private void todo13() { title("TODO 13: JPQL LIKE"); }
     private void todo14() { title("TODO 14: LEFT JOIN + GROUP BY + DTO"); }
     private void todo15() { title("TODO 15: subquery AVG"); }

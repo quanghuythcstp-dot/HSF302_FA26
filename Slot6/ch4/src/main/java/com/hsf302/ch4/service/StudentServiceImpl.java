@@ -114,4 +114,10 @@ public class StudentServiceImpl implements StudentService {
     public List<Student> findTop3ByGpa() {
         return studentRepository.findTop3ByOrderByGpaDesc();
     }
+
+    // TODO 12
+    @Override
+    public List<Student> findGoodStudents(String deptCode, double minGpa) {
+        return studentRepository.findGoodStudents(deptCode, minGpa);
+    }
 }
