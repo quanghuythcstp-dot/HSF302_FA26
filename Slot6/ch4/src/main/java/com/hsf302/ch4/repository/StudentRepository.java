@@ -52,4 +52,12 @@ public interface StudentRepository extends JpaRepository<Student, Long>,
     // TODO 15
     @Query("SELECT s FROM Student s WHERE s.gpa > (SELECT AVG(st.gpa) FROM Student st) ORDER BY s.gpa DESC")
     List<Student> findAboveAverageGpa();
+
+    // TODO 17
+    @Query(value = "SELECT TOP (:n) * FROM students s " +
+                   "INNER JOIN departments d ON s.department_id = d.id " +
+                   "WHERE d.code = :deptCode " +
+                   "ORDER BY s.gpa DESC",
+           nativeQuery = true)
+    List<Student> findTopNInDepartment(@Param("deptCode") String deptCode, @Param("n") int n);
 }

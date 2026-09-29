@@ -178,7 +178,12 @@ public class ExerciseRunner implements CommandLineRunner {
         System.out.println("(b) " + dept);
         dept.getStudents().forEach(s -> System.out.println("   " + s));
     }
-    private void todo17() { title("TODO 17: native query TOP N"); }
+    private void todo17() {
+        title("TODO 17: native query TOP N");
+
+        // lấy top 2 GPA cao nhất của department SE bằng native SQL (SQL Server TOP)
+        printList("Top 2 students in SE (native SQL)", studentService.findTopNInDepartment("SE", 2));
+    }
     private void todo18() { title("TODO 18: interface projection"); }
     private void todo19() { title("TODO 19: @Query + Pageable"); }
 
