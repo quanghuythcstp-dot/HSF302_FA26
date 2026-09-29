@@ -1,5 +1,6 @@
 package com.hsf302.ch4.runner;
 
+import com.hsf302.ch4.pojo.Department;
 import com.hsf302.ch4.pojo.Gender;
 import com.hsf302.ch4.pojo.Student;
 import com.hsf302.ch4.service.DepartmentService;
@@ -159,7 +160,24 @@ public class ExerciseRunner implements CommandLineRunner {
         // tìm student có GPA lớn hơn GPA trung bình toàn bộ
         printList("Students above average GPA", studentService.findAboveAverageGpa());
     }
-    private void todo16() { title("TODO 16: LazyInitializationException + JOIN FETCH"); }
+    private void todo16() {
+        title("TODO 16: LazyInitializationException + JOIN FETCH");
+
+        // (a) gọi getStudents().size() ngoài transaction → bắt LazyInitializationException
+        try {
+            Department dept = departmentService.findByCode("AI")
+                    .orElseThrow();
+            int size = dept.getStudents().size(); // trigger lazy load ngoài transaction
+            System.out.println("Size: " + size);  // dòng này sẽ không chạy tới
+        } catch (Exception e) {
+            System.out.println("(a) Exception: " + e.getClass().getSimpleName() + " - " + e.getMessage());
+        }
+
+        // (b) dùng JOIN FETCH → load department kèm students trong 1 query
+        Department dept = departmentService.getWithStudents("AI");
+        System.out.println("(b) " + dept);
+        dept.getStudents().forEach(s -> System.out.println("   " + s));
+    }
     private void todo17() { title("TODO 17: native query TOP N"); }
     private void todo18() { title("TODO 18: interface projection"); }
     private void todo19() { title("TODO 19: @Query + Pageable"); }
