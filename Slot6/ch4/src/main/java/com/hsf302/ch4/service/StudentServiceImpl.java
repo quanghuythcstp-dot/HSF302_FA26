@@ -22,6 +22,7 @@ public class StudentServiceImpl implements StudentService {
 
     private final StudentRepository studentRepository;
 
+    // TODO 6
     @Override
     public long count() {
         return studentRepository.count();
@@ -32,6 +33,7 @@ public class StudentServiceImpl implements StudentService {
         return studentRepository.findById(id);
     }
 
+    // TODO 7
     @Override
     public List<Student> findAllOrderByGpaDesc() {
         return studentRepository.findAll(Sort.by(Sort.Direction.DESC, "gpa"));
@@ -46,6 +48,7 @@ public class StudentServiceImpl implements StudentService {
         return studentRepository.findAll(pageable);
     }
 
+    // TODO 8
     @Override
     public Optional<Student> findByStudentCode(String code) {
         return studentRepository.findByStudentCode(code);
@@ -61,6 +64,7 @@ public class StudentServiceImpl implements StudentService {
         return studentRepository.countByActiveTrue();
     }
 
+    // TODO 9
     @Override
     public List<Student> searchByName(String keyword) {
         if (keyword == null || keyword.isBlank()) return List.of();
@@ -78,6 +82,7 @@ public class StudentServiceImpl implements StudentService {
         return studentRepository.findByEmailIsNull();
     }
 
+    // TODO 10
     @Override
     public List<Student> findByGpaRange(double min, double max) {
         if (min > max) throw new IllegalArgumentException("min phải <= max");
@@ -92,5 +97,21 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public List<Student> findBornAfter(LocalDate date) {
         return studentRepository.findByDobAfter(date);
+    }
+
+    // TODO 11
+    @Override
+    public List<Student> findByDepartment(String deptCode) {
+        return studentRepository.findByDepartmentCodeOrderByFullNameAsc(deptCode);
+    }
+
+    @Override
+    public long countByDepartment(String deptCode) {
+        return studentRepository.countByDepartmentCode(deptCode);
+    }
+
+    @Override
+    public List<Student> findTop3ByGpa() {
+        return studentRepository.findTop3ByOrderByGpaDesc();
     }
 }

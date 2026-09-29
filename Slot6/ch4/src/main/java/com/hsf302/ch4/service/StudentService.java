@@ -10,21 +10,31 @@ import java.util.Optional;
 
 public interface StudentService {
 
+    // TODO 6
     long count();
     Optional<Student> findById(Long id);
 
+    // TODO 7
     List<Student> findAllOrderByGpaDesc();
     Page<Student> findPage(int pageIndex, int size, String sortField);
 
+    // TODO 8
     Optional<Student> findByStudentCode(String code);
     boolean isEmailExisted(String email);
     long countActive();
 
+    // TODO 9
     List<Student> searchByName(String keyword);
     List<Student> findByEmailDomain(String domain);
     List<Student> findWithoutEmail();
 
+    // TODO 10
     List<Student> findByGpaRange(double min, double max);
     List<Student> findActiveByGender(Gender gender);
     List<Student> findBornAfter(LocalDate date);
+
+    // TODO 11
+    List<Student> findByDepartment(String deptCode);
+    long countByDepartment(String deptCode);
+    List<Student> findTop3ByGpa();
 }

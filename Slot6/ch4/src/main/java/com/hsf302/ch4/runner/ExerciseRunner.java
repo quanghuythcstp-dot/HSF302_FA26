@@ -113,7 +113,21 @@ public class ExerciseRunner implements CommandLineRunner {
         printList("MALE active", studentService.findActiveByGender(Gender.MALE));
         printList("Born after 2005-01-01", studentService.findBornAfter(LocalDate.of(2005, 1, 1)));
     }
-    private void todo11() { title("TODO 11: nested property / Top / IsEmpty"); }
+    private void todo11() {
+        title("TODO 11: nested property / Top / IsEmpty");
+
+        // (a) sinh viên thuộc SE sắp xếp fullName tăng dần (nested property: department.code)
+        printList("Students in SE (order by name)", studentService.findByDepartment("SE"));
+
+        // (b) đếm sinh viên của AI
+        System.out.println("Count AI: " + studentService.countByDepartment("AI"));
+
+        // (c) top 3 GPA cao nhất
+        printList("Top 3 GPA", studentService.findTop3ByGpa());
+
+        // (d) department chưa có sinh viên
+        printList("Departments without students", departmentService.findDepartmentsWithoutStudents());
+    }
 
     // ===== Part D =====
     private void todo12() { title("TODO 12: JPQL + named parameter"); }
