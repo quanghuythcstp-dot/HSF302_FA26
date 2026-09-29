@@ -241,5 +241,20 @@ public class ExerciseRunner implements CommandLineRunner {
         System.out.println("SE now has: " + studentService.countByDepartment("SE") + " students");
         printList("Departments remaining", departmentService.findAll());
     }
-    private void todo23() { title("TODO 23: derived delete inactive"); }
+    private void todo23() {
+        title("TODO 23: derived delete inactive");
+
+        // xóa toàn bộ student inactive
+        long deleted = studentService.deleteInactiveStudents();
+        System.out.println("Deleted: " + deleted + " inactive students");
+        System.out.println("Total remaining: " + studentService.count());
+
+        // chạy lại thống kê như TODO 14
+        System.out.println("-- Statistics after delete:");
+        departmentService.getStatistics().forEach(s ->
+                System.out.printf("   %-4s | %-25s | %3d students | avg GPA: %s%n",
+                        s.code(), s.name(), s.studentCount(),
+                        s.avgGpa() == null ? "null" : String.format("%.3f", s.avgGpa()))
+        );
+    }
 }

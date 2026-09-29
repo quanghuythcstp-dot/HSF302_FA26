@@ -69,4 +69,7 @@ public interface StudentService {
 
     // TODO 21
     int deactivateLowGpa(double threshold);
+
+    // TODO 23
+    long deleteInactiveStudents();
 }
