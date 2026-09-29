@@ -79,7 +79,24 @@ public class ExerciseRunner implements CommandLineRunner {
     }
 
     // ===== Part C =====
-    private void todo8()  { title("TODO 8: findBy / existsBy / countBy"); }
+    private void todo8() {
+        title("TODO 8: findBy / existsBy / countBy");
+
+        // (a) findByStudentCode
+        studentService.findByStudentCode("AI002").ifPresentOrElse(
+                s -> System.out.println("AI002 -> " + s),
+                () -> System.out.println("AI002 -> Not found"));
+
+        studentService.findByStudentCode("XX999").ifPresentOrElse(
+                s -> System.out.println("XX999 -> " + s),
+                () -> System.out.println("XX999 -> Not found"));
+
+        // (b) existsByEmail
+        System.out.println("exists binh.tt@fpt.edu.vn -> " + studentService.isEmailExisted("binh.tt@fpt.edu.vn"));
+
+        // (c) countByActiveTrue
+        System.out.println("Active students: " + studentService.countActive());
+    }
     private void todo9()  { title("TODO 9: ContainingIgnoreCase / EndingWith / IsNull"); }
     private void todo10() { title("TODO 10: Between / And+True / After"); }
     private void todo11() { title("TODO 11: nested property / Top / IsEmpty"); }
