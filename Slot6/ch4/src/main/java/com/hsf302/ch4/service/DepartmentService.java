@@ -1,5 +1,6 @@
 package com.hsf302.ch4.service;
 
+import com.hsf302.ch4.dto.DepartmentStatDTO;
 import com.hsf302.ch4.pojo.Department;
 
 import java.util.List;
@@ -12,4 +13,7 @@ public interface DepartmentService {
 
     // TODO 11
     List<Department> findDepartmentsWithoutStudents();
+
+    // TODO 14
+    List<DepartmentStatDTO> getStatistics();
 }

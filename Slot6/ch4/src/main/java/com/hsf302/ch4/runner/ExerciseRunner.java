@@ -143,7 +143,16 @@ public class ExerciseRunner implements CommandLineRunner {
         printList("searchByKeyword(\"hoa\")", studentService.searchByKeyword("hoa"));
         printList("searchByKeyword(\"gmail\")", studentService.searchByKeyword("gmail"));
     }
-    private void todo14() { title("TODO 14: LEFT JOIN + GROUP BY + DTO"); }
+    private void todo14() {
+        title("TODO 14: LEFT JOIN + GROUP BY + DTO");
+
+        // thống kê từng department (kể cả chưa có sinh viên), in GPA 3 chữ số thập phân
+        departmentService.getStatistics().forEach(s ->
+                System.out.printf("   %-4s | %-25s | %3d students | avg GPA: %s%n",
+                        s.code(), s.name(), s.studentCount(),
+                        s.avgGpa() == null ? "null" : String.format("%.3f", s.avgGpa()))
+        );
+    }
     private void todo15() { title("TODO 15: subquery AVG"); }
     private void todo16() { title("TODO 16: LazyInitializationException + JOIN FETCH"); }
     private void todo17() { title("TODO 17: native query TOP N"); }

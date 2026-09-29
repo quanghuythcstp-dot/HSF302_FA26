@@ -2,6 +2,7 @@ package com.hsf302.ch4.repository;
 
 import com.hsf302.ch4.pojo.Gender;
 import com.hsf302.ch4.pojo.Student;
+import com.hsf302.ch4.pojo.Department;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -41,4 +42,10 @@ public interface StudentRepository extends JpaRepository<Student, Long>,
     // TODO 13
     @Query("SELECT s FROM Student s WHERE LOWER(s.fullName) LIKE LOWER(CONCAT('%', :kw, '%')) OR (s.email IS NOT NULL AND LOWER(s.email) LIKE LOWER(CONCAT('%', :kw, '%'))) ORDER BY s.fullName")
     List<Student> searchByKeyword(@Param("kw") String kw);
+
+    // TODO 14
+    @Query("SELECT new com.hsf302.ch4.dto.DepartmentStatDTO(d.code, d.name, COUNT(s), AVG(s.gpa)) " +
+           "FROM Department d LEFT JOIN d.students s " +
+           "GROUP BY d.code, d.name ORDER BY d.code")
+    List<com.hsf302.ch4.dto.DepartmentStatDTO> getDepartmentStatistics();
 }
