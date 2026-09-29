@@ -1,10 +1,12 @@
 package com.hsf302.ch4.runner;
 
+import com.hsf302.ch4.pojo.Student;
 import com.hsf302.ch4.service.DepartmentService;
 import com.hsf302.ch4.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
@@ -45,7 +47,22 @@ public class ExerciseRunner implements CommandLineRunner {
     }
 
     // ===== Part B =====
-    private void todo6()  { title("TODO 6: count / findById / existsById"); }
+    private void todo6() {
+        title("TODO 6: count / findById / existsById");
+        System.out.println("Departments: " + departmentService.count());
+        System.out.println("Students   : " + studentService.count());
+
+        studentService.findById(1L).ifPresentOrElse(
+                s -> System.out.println("findById(1)  -> " + s),
+                () -> System.out.println("findById(1)  -> Not found"));
+
+        System.out.println("findById(99) -> " + studentService.findById(99L)
+                .map(Object::toString)
+                .orElse("Not found"));
+
+        System.out.println("existsById(4) department -> " + departmentService.existsById(4L));
+    }
+
     private void todo7()  { title("TODO 7: Sort & Pageable"); }
 
     // ===== Part C =====

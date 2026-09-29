@@ -1,5 +1,8 @@
 package com.hsf302.ch4.service;
 
 public interface DepartmentService {
-    // Các method được bổ sung dần từ TODO 6
+
+    // TODO 6
+    long count();
+    boolean existsById(Long id);
 }
