@@ -206,7 +206,15 @@ public class ExerciseRunner implements CommandLineRunner {
     }
 
     // ===== Bonus =====
-    private void todo24() { title("TODO 24: Specification"); }
+    private void todo24() {
+        title("TODO 24: Specification");
+
+        // search(null, "AI", 3.0, true) → sinh viên AI active GPA >= 3.0
+        printList("search(null, \"AI\", 3.0, true)", studentService.search(null, "AI", 3.0, true));
+
+        // search("van", null, null, null) → tên chứa "van"
+        printList("search(\"van\", null, null, null)", studentService.search("van", null, null, null));
+    }
 
     // ===== Part E =====
     private void todo20() { title("TODO 20: update GPA dirty checking"); }

@@ -60,4 +60,7 @@ public interface StudentService {
 
     // TODO 19
     Page<Student> findActiveByDepartment(String deptCode, int pageIndex, int size);
+
+    // TODO 24 (Bonus)
+    List<Student> search(String kw, String deptCode, Double minGpa, Boolean active);
 }
