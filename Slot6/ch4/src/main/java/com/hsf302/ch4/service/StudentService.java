@@ -63,4 +63,7 @@ public interface StudentService {
 
     // TODO 24 (Bonus)
     List<Student> search(String kw, String deptCode, Double minGpa, Boolean active);
+
+    // TODO 20
+    Student updateGpa(String code, double newGpa);
 }
