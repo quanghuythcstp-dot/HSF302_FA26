@@ -177,12 +177,10 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         com.hsf302.ch4.pojo.Course from = getCourse(fromCode);
         com.hsf302.ch4.pojo.Course to = getCourse(toCode);
 
-        // huỷ from
         if (!s.getCourses().contains(from))
             throw new IllegalStateException("Not enrolled: " + studentCode + " -> " + fromCode);
         s.unenroll(from);
 
-        // đăng ký to — kiểm tra đầy đủ quy tắc nghiệp vụ
         if (!s.isActive())
             throw new IllegalStateException("Student is inactive: " + studentCode);
         if (s.getCourses().contains(to))
@@ -190,5 +188,12 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         if (to.getStudents().size() >= to.getCapacity())
             throw new IllegalStateException("Course is full: " + toCode);
         s.enroll(to);
+    }
+
+    // TODO 24
+    @Override
+    @org.springframework.transaction.annotation.Transactional
+    public int removeEnrollmentsOfInactiveStudents() {
+        return studentRepository.deleteEnrollmentsOfInactiveStudents();
     }
 }

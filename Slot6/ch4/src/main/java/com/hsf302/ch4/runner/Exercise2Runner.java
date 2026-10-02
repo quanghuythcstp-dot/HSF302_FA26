@@ -302,5 +302,22 @@ public class Exercise2Runner implements CommandLineRunner {
         printList("Courses remaining", courseService.findAllOrderByCode());
         printList("Courses of IA002", enrollmentService.getCoursesOfStudent("IA002"));
     }
-    private void todo24() { title("TODO 24: remove enrollments of inactive students"); }
+    private void todo24() {
+        title("TODO 24: remove enrollments of inactive students");
+
+        // xóa mọi lượt đăng ký của sinh viên inactive bằng 1 câu native DELETE
+        int deleted = enrollmentService.removeEnrollmentsOfInactiveStudents();
+        System.out.println("Deleted enrollments of inactive students: " + deleted);
+
+        // chạy lại thống kê TODO 13
+        System.out.println("-- Statistics after delete:");
+        courseService.getStatistics().forEach(s ->
+                System.out.printf("   %-6s | %-42s | %d/%d | avg GPA: %s%n",
+                        s.code(), s.name(), s.enrolled(), s.capacity(),
+                        s.avgGpa() == null ? "null" : String.format("%.3f", s.avgGpa()))
+        );
+
+        // sinh viên chưa đăng ký khóa nào
+        printList("Students without courses", enrollmentService.findStudentsWithoutCourses());
+    }
 }

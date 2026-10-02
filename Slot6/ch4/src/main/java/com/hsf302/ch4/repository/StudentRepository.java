@@ -130,4 +130,11 @@ public interface StudentRepository extends JpaRepository<Student, Long>,
     @Query(value = "SELECT s FROM Student s JOIN s.courses c WHERE c.code = :courseCode ORDER BY s.fullName",
            countQuery = "SELECT COUNT(s) FROM Student s JOIN s.courses c WHERE c.code = :courseCode")
     Page<Student> findStudentsInCoursePage(@Param("courseCode") String courseCode, Pageable pageable);
+
+    // TODO 24 (EX2)
+    @Modifying(clearAutomatically = true)
+    @Query(value = "DELETE FROM student_courses WHERE student_id IN " +
+                   "(SELECT id FROM students WHERE active = 0)",
+           nativeQuery = true)
+    int deleteEnrollmentsOfInactiveStudents();
 }
