@@ -10,7 +10,6 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
-
 @Component
 @Order(3)
 @Profile("ex2")
@@ -58,7 +57,17 @@ public class Exercise2Runner implements CommandLineRunner {
     }
 
     // ===== Part B =====
-    private void todo6()  { title("TODO 6: count, findAll(Sort), findById"); }
+    private void todo6() {
+        title("TODO 6: count, findAll(Sort), findById");
+
+        System.out.println("Total courses: " + courseService.count());
+        printList("All courses order by code", courseService.findAllOrderByCode());
+
+        for (long id : new long[]{2L, 99L}) {
+            System.out.println("findById(" + id + "): "
+                    + courseService.findById(id).map(Object::toString).orElse("Not found"));
+        }
+    }
     private void todo7()  { title("TODO 7: navigate student.getCourses() / course.getStudents()"); }
 
     // ===== Part C =====
