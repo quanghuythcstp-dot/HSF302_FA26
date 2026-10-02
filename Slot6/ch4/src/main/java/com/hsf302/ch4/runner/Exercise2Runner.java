@@ -275,7 +275,19 @@ public class Exercise2Runner implements CommandLineRunner {
         System.out.println("AI002 still exists: " + studentService.findByStudentCode("AI002").isPresent());
         System.out.println("Total courses: " + courseService.count());
     }
-    private void todo22() { title("TODO 22: switch course in one transaction"); }
+    private void todo22() {
+        title("TODO 22: switch course in one transaction");
+
+        // lần 1: SE001 đổi SWP391 → MKT101 (OK)
+        attempt("switch SE001: SWP391 -> MKT101 (OK)",
+                () -> enrollmentService.switchCourse("SE001", "SWP391", "MKT101"));
+        printList("SE001 courses after switch 1", enrollmentService.getCoursesOfStudent("SE001"));
+
+        // lần 2: SE001 đổi PRJ301 → AIL303 (hết chỗ 4/4) → rollback
+        attempt("switch SE001: PRJ301 -> AIL303 (FAIL - full)",
+                () -> enrollmentService.switchCourse("SE001", "PRJ301", "AIL303"));
+        printList("SE001 courses after switch 2 (rollback)", enrollmentService.getCoursesOfStudent("SE001"));
+    }
     private void todo23() { title("TODO 23: delete course safely"); }
     private void todo24() { title("TODO 24: remove enrollments of inactive students"); }
 }

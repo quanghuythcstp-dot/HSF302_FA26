@@ -163,6 +163,32 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         if (!s.getCourses().contains(c))
             throw new IllegalStateException("Not enrolled: " + studentCode + " -> " + courseCode);
 
-        s.unenroll(c); // dirty checking → DELETE khỏi student_courses
+        s.unenroll(c);
+    }
+
+    // TODO 22
+    @Override
+    @org.springframework.transaction.annotation.Transactional
+    public void switchCourse(String studentCode, String fromCode, String toCode) {
+        if (fromCode.equals(toCode))
+            throw new IllegalArgumentException("2 khóa phải khác nhau");
+
+        com.hsf302.ch4.pojo.Student s = getStudent(studentCode);
+        com.hsf302.ch4.pojo.Course from = getCourse(fromCode);
+        com.hsf302.ch4.pojo.Course to = getCourse(toCode);
+
+        // huỷ from
+        if (!s.getCourses().contains(from))
+            throw new IllegalStateException("Not enrolled: " + studentCode + " -> " + fromCode);
+        s.unenroll(from);
+
+        // đăng ký to — kiểm tra đầy đủ quy tắc nghiệp vụ
+        if (!s.isActive())
+            throw new IllegalStateException("Student is inactive: " + studentCode);
+        if (s.getCourses().contains(to))
+            throw new IllegalStateException("Already enrolled: " + studentCode + " -> " + toCode);
+        if (to.getStudents().size() >= to.getCapacity())
+            throw new IllegalStateException("Course is full: " + toCode);
+        s.enroll(to);
     }
 }
