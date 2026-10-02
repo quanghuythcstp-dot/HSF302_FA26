@@ -140,7 +140,15 @@ public class Exercise2Runner implements CommandLineRunner {
         printList("Good students in HSF302 (GPA >= 3.5)",
                 enrollmentService.findGoodStudentsInCourse("HSF302", 3.5));
     }
-    private void todo13() { title("TODO 13: course statistics with dto projection"); }
+    private void todo13() {
+        title("TODO 13: course statistics with dto projection");
+
+        courseService.getStatistics().forEach(s ->
+                System.out.printf("   %-6s | %-42s | %d/%d (còn %d) | avg GPA: %s%n",
+                        s.code(), s.name(), s.enrolled(), s.capacity(), s.remaining(),
+                        s.avgGpa() == null ? "null" : String.format("%.3f", s.avgGpa()))
+        );
+    }
     private void todo14() { title("TODO 14: group by sum having"); }
     private void todo15() { title("TODO 15: full courses and busy students with size"); }
     private void todo16() { title("TODO 16: lazy + join fetch + entity graph"); }
