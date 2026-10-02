@@ -118,7 +118,19 @@ public class Exercise2Runner implements CommandLineRunner {
         // (b) courses có SV khoa AI — có Distinct (loại trùng)
         printList("(b2) Courses of AI dept - Distinct", courseService.findCoursesOfDepartment("AI", true));
     }
-    private void todo11() { title("TODO 11: unenrolled students and empty courses"); }
+    private void todo11() {
+        title("TODO 11: unenrolled students and empty courses");
+
+        // (a) student chưa đăng ký khóa nào
+        printList("(a) Students without courses", enrollmentService.findStudentsWithoutCourses());
+
+        // (b) course chưa có student
+        printList("(b) Courses without students", courseService.findCoursesWithoutStudents());
+
+        // (c) kiểm tra đăng ký
+        System.out.println("(c) SE001 enrolled AIL303: " + enrollmentService.isEnrolled("SE001", "AIL303"));
+        System.out.println("(c) SE002 enrolled AIL303: " + enrollmentService.isEnrolled("SE002", "AIL303"));
+    }
 
     // ===== Part D =====
     private void todo12() { title("TODO 12: JPQL join collection"); }
