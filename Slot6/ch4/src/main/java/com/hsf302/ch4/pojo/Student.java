@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "students")
@@ -37,15 +40,47 @@ public class Student {
 
     private boolean active;
 
-    // Owning side: bảng students có cột department_id (FK → departments.id)
+    // Owning side Many-To-One: bảng students có cột department_id (FK → departments.id)
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "department_id", nullable = false)
     private Department department;
+
+    // Owning side Many-To-Many: Student quản lý bảng trung gian student_courses
+    @ManyToMany
+    @JoinTable(
+        name = "student_courses",
+        joinColumns = @JoinColumn(name = "student_id"),
+        inverseJoinColumns = @JoinColumn(name = "course_id")
+    )
+    private Set<Course> courses = new HashSet<>();
+
+    // Helper đồng bộ 2 chiều
+    public void enroll(Course c) {
+        courses.add(c);
+        c.getStudents().add(this);
+    }
+
+    public void unenroll(Course c) {
+        courses.remove(c);
+        c.getStudents().remove(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Student other)) return false;
+        return studentCode != null && studentCode.equals(other.getStudentCode());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(studentCode);
+    }
 
     @Override
     public String toString() {
         return String.format("%s | %-20s | %-25s | %.1f | %s",
                 studentCode, fullName, email, gpa, active ? "active" : "inactive");
-        // KHÔNG in department → tránh LazyInitializationException
+        // KHÔNG in department, courses → tránh LazyInitializationException
     }
 }
