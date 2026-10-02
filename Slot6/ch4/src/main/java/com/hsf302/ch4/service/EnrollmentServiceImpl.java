@@ -8,6 +8,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -31,5 +34,20 @@ public class EnrollmentServiceImpl implements EnrollmentService {
                 .orElseThrow(() -> new IllegalArgumentException("Course not found: " + courseCode));
     }
 
-    // cài đặt dần từ TODO 7
+    // TODO 7
+    @Override
+    public List<Course> getCoursesOfStudent(String studentCode) {
+        Student s = getStudent(studentCode);
+        return s.getCourses().stream()
+                .sorted(Comparator.comparing(Course::getCode))
+                .toList();
+    }
+
+    @Override
+    public List<Student> getStudentsOfCourse(String courseCode) {
+        Course c = getCourse(courseCode);
+        return c.getStudents().stream()
+                .sorted(Comparator.comparing(Student::getFullName))
+                .toList();
+    }
 }

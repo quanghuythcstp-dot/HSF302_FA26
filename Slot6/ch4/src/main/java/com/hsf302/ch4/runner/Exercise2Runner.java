@@ -68,7 +68,15 @@ public class Exercise2Runner implements CommandLineRunner {
                     + courseService.findById(id).map(Object::toString).orElse("Not found"));
         }
     }
-    private void todo7()  { title("TODO 7: navigate student.getCourses() / course.getStudents()"); }
+    private void todo7() {
+        title("TODO 7: navigate student.getCourses() / course.getStudents()");
+
+        // (a) courses của SE001 (owning side)
+        printList("(a) Courses of SE001", enrollmentService.getCoursesOfStudent("SE001"));
+
+        // (b) students của AIL303 (inverse side)
+        printList("(b) Students of AIL303", enrollmentService.getStudentsOfCourse("AIL303"));
+    }
 
     // ===== Part C =====
     private void todo8()  { title("TODO 8: findByCode, findBySemester, countBySemester"); }
