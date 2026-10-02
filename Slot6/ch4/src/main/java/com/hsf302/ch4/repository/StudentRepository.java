@@ -109,4 +109,8 @@ public interface StudentRepository extends JpaRepository<Student, Long>,
            "HAVING SUM(c.credits) >= :minCredits " +
            "ORDER BY SUM(c.credits) DESC, s.fullName")
     List<com.hsf302.ch4.dto.StudentCreditDTO> getCreditSummary(@Param("minCredits") int minCredits);
+
+    // TODO 15 (EX2)
+    @Query("SELECT s FROM Student s WHERE SIZE(s.courses) > :n ORDER BY s.fullName")
+    List<Student> findStudentsWithMoreThan(@Param("n") int n);
 }

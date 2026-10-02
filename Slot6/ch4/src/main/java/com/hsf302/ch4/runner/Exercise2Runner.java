@@ -158,7 +158,15 @@ public class Exercise2Runner implements CommandLineRunner {
                         s.studentCode(), s.fullName(), s.courseCount(), s.totalCredits())
         );
     }
-    private void todo15() { title("TODO 15: full courses and busy students with size"); }
+    private void todo15() {
+        title("TODO 15: full courses and busy students with size");
+
+        // (a) khóa học đã đủ chỗ (SIZE(students) >= capacity)
+        printList("(a) Full courses", courseService.findFullCourses());
+
+        // (b) sinh viên đăng ký nhiều hơn 2 khóa
+        printList("(b) Students with more than 2 courses", enrollmentService.findStudentsWithMoreThan(2));
+    }
     private void todo16() { title("TODO 16: lazy + join fetch + entity graph"); }
     private void todo17() { title("TODO 17: top enrolled courses native sql"); }
     private void todo18() { title("TODO 18: enrollment view interface projection"); }

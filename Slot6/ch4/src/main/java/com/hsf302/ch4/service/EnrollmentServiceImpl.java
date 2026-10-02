@@ -91,4 +91,11 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         if (minCredits < 0) throw new IllegalArgumentException("minCredits phải >= 0");
         return studentRepository.getCreditSummary(minCredits);
     }
+
+    // TODO 15
+    @Override
+    public List<Student> findStudentsWithMoreThan(int n) {
+        if (n < 0) throw new IllegalArgumentException("n phải >= 0");
+        return studentRepository.findStudentsWithMoreThan(n);
+    }
 }

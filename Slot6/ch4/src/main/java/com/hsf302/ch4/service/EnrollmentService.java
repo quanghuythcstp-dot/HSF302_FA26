@@ -25,4 +25,7 @@ public interface EnrollmentService {
 
     // TODO 14
     List<com.hsf302.ch4.dto.StudentCreditDTO> getCreditSummary(int minCredits);
+
+    // TODO 15
+    List<Student> findStudentsWithMoreThan(int n);
 }

@@ -26,4 +26,7 @@ public interface CourseService {
 
     // TODO 13
     List<com.hsf302.ch4.dto.CourseStatDTO> getStatistics();
+
+    // TODO 15
+    List<Course> findFullCourses();
 }
