@@ -133,7 +133,13 @@ public class Exercise2Runner implements CommandLineRunner {
     }
 
     // ===== Part D =====
-    private void todo12() { title("TODO 12: JPQL join collection"); }
+    private void todo12() {
+        title("TODO 12: JPQL join collection");
+
+        // tìm sinh viên của HSF302 có GPA >= 3.5, sắp xếp GPA giảm dần
+        printList("Good students in HSF302 (GPA >= 3.5)",
+                enrollmentService.findGoodStudentsInCourse("HSF302", 3.5));
+    }
     private void todo13() { title("TODO 13: course statistics with dto projection"); }
     private void todo14() { title("TODO 14: group by sum having"); }
     private void todo15() { title("TODO 15: full courses and busy students with size"); }
