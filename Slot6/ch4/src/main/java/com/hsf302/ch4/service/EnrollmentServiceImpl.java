@@ -150,6 +150,19 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         if (c.getStudents().size() >= c.getCapacity())
             throw new IllegalStateException("Course is full: " + courseCode);
 
-        s.enroll(c); // dirty checking → INSERT vào student_courses
+        s.enroll(c);
+    }
+
+    // TODO 21
+    @Override
+    @org.springframework.transaction.annotation.Transactional
+    public void unenroll(String studentCode, String courseCode) {
+        com.hsf302.ch4.pojo.Student s = getStudent(studentCode);
+        com.hsf302.ch4.pojo.Course c = getCourse(courseCode);
+
+        if (!s.getCourses().contains(c))
+            throw new IllegalStateException("Not enrolled: " + studentCode + " -> " + courseCode);
+
+        s.unenroll(c); // dirty checking → DELETE khỏi student_courses
     }
 }
