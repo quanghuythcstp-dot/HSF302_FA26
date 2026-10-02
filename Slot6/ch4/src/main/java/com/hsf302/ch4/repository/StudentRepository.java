@@ -86,4 +86,11 @@ public interface StudentRepository extends JpaRepository<Student, Long>,
 
     // TODO 23
     long deleteByActiveFalse();
+
+    // ===== Exercise 2 =====
+
+    // TODO 9 (EX2)
+    List<Student> findByCourses_CodeOrderByFullNameAsc(String courseCode);
+    long countByCourses_Code(String courseCode);
+    List<Student> findByCourses_CodeAndActiveTrueOrderByFullNameAsc(String courseCode);
 }

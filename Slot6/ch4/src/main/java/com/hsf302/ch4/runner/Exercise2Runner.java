@@ -94,7 +94,18 @@ public class Exercise2Runner implements CommandLineRunner {
         // (c) countBySemester FA26
         System.out.println("(c) Courses in FA26: " + courseService.countBySemester("FA26"));
     }
-    private void todo9()  { title("TODO 9: derived query through collection courses"); }
+    private void todo9() {
+        title("TODO 9: derived query through collection courses");
+
+        // (a) students đăng ký PRJ301, sắp xếp fullName
+        printList("(a) Students of PRJ301", enrollmentService.findStudentsInCourse("PRJ301"));
+
+        // (b) đếm students của HSF302
+        System.out.println("(b) Students of HSF302: " + enrollmentService.countStudentsInCourse("HSF302"));
+
+        // (c) students ACTIVE đăng ký PRJ301
+        printList("(c) Active students of PRJ301", enrollmentService.findActiveStudentsInCourse("PRJ301"));
+    }
     private void todo10() { title("TODO 10: courses by student and department with distinct"); }
     private void todo11() { title("TODO 11: unenrolled students and empty courses"); }
 
