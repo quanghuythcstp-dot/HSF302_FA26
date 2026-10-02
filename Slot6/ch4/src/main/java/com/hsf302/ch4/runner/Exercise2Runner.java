@@ -193,7 +193,15 @@ public class Exercise2Runner implements CommandLineRunner {
                 .sorted(java.util.Comparator.comparing(com.hsf302.ch4.pojo.Student::getFullName))
                 .forEach(st -> System.out.println("   " + st));
     }
-    private void todo17() { title("TODO 17: top enrolled courses native sql"); }
+    private void todo17() {
+        title("TODO 17: top enrolled courses native sql");
+
+        // top 3 khóa học đông sinh viên nhất (kể cả 0 SV), native SQL TOP
+        courseService.findTopEnrolled(3).forEach(c ->
+                System.out.printf("   %-6s | %-42s | %d enrolled%n",
+                        c.getCode(), c.getName(), c.getEnrolled())
+        );
+    }
     private void todo18() { title("TODO 18: enrollment view interface projection"); }
     private void todo19() { title("TODO 19: paginate students of course"); }
 
