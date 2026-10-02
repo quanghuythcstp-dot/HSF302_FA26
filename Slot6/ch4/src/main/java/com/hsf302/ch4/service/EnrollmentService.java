@@ -34,4 +34,8 @@ public interface EnrollmentService {
 
     // TODO 18
     List<com.hsf302.ch4.dto.EnrollmentView> getEnrollmentsOfDepartment(String deptCode);
+
+    // TODO 19
+    org.springframework.data.domain.Page<com.hsf302.ch4.pojo.Student> findStudentsInCoursePage(
+            String courseCode, int pageIndex, int size);
 }

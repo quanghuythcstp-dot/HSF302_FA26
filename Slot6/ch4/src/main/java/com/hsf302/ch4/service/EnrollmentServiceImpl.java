@@ -111,4 +111,15 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     public List<com.hsf302.ch4.dto.EnrollmentView> getEnrollmentsOfDepartment(String deptCode) {
         return studentRepository.getEnrollmentsOfDepartment(deptCode);
     }
+
+    // TODO 19
+    @Override
+    public org.springframework.data.domain.Page<com.hsf302.ch4.pojo.Student> findStudentsInCoursePage(
+            String courseCode, int pageIndex, int size) {
+        if (pageIndex < 0 || size <= 0)
+            throw new IllegalArgumentException("pageIndex phải >= 0 và size phải > 0");
+        org.springframework.data.domain.Pageable pageable =
+                org.springframework.data.domain.PageRequest.of(pageIndex, size);
+        return studentRepository.findStudentsInCoursePage(courseCode, pageable);
+    }
 }

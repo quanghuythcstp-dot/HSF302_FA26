@@ -212,7 +212,23 @@ public class Exercise2Runner implements CommandLineRunner {
                         e.getCourseCode(), e.getCourseName(), e.getCredits())
         );
     }
-    private void todo19() { title("TODO 19: paginate students of course"); }
+    private void todo19() {
+        title("TODO 19: paginate students of course");
+
+        // phân trang sinh viên của HSF302, mỗi trang 2, sắp xếp fullName
+        int total = 0;
+        int page = 0;
+        org.springframework.data.domain.Page<com.hsf302.ch4.pojo.Student> result;
+        do {
+            result = enrollmentService.findStudentsInCoursePage("HSF302", page, 2);
+            printList("HSF302 page " + page, result.getContent());
+            if (page == 0) {
+                System.out.println("totalElements=" + result.getTotalElements()
+                        + ", totalPages=" + result.getTotalPages());
+            }
+            page++;
+        } while (result.hasNext());
+    }
 
     // ===== Bonus =====
     private void todo25() { title("TODO 25: specification with join and distinct"); }
