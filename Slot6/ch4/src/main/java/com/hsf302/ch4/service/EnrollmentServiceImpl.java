@@ -122,4 +122,17 @@ public class EnrollmentServiceImpl implements EnrollmentService {
                 org.springframework.data.domain.PageRequest.of(pageIndex, size);
         return studentRepository.findStudentsInCoursePage(courseCode, pageable);
     }
+
+    // TODO 25
+    @Override
+    public List<com.hsf302.ch4.pojo.Student> search(String courseCode, String semester,
+                                                      String deptCode, Double minGpa) {
+        org.springframework.data.jpa.domain.Specification<com.hsf302.ch4.pojo.Student> spec =
+                com.hsf302.ch4.specification.EnrollmentSpecs.enrolledIn(courseCode)
+                .and(com.hsf302.ch4.specification.EnrollmentSpecs.inSemester(semester))
+                .and(com.hsf302.ch4.specification.EnrollmentSpecs.inDepartment(deptCode))
+                .and(com.hsf302.ch4.specification.EnrollmentSpecs.gpaAtLeast(minGpa));
+        return studentRepository.findAll(spec,
+                org.springframework.data.domain.Sort.by("fullName"));
+    }
 }

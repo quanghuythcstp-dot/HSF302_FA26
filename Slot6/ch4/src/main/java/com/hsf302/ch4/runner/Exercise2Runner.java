@@ -231,7 +231,21 @@ public class Exercise2Runner implements CommandLineRunner {
     }
 
     // ===== Bonus =====
-    private void todo25() { title("TODO 25: specification with join and distinct"); }
+    private void todo25() {
+        title("TODO 25: specification with join and distinct");
+
+        // search(null, "SU26", null, null) → SV đăng ký khóa học kỳ SU26
+        printList("search(null, SU26, null, null)",
+                enrollmentService.search(null, "SU26", null, null));
+
+        // search("HSF302", null, "SE", 3.5) → SV SE đăng ký HSF302 có GPA >= 3.5
+        printList("search(HSF302, null, SE, 3.5)",
+                enrollmentService.search("HSF302", null, "SE", 3.5));
+
+        // search(null, "FA26", "AI", null) → SV AI đăng ký khóa FA26
+        printList("search(null, FA26, AI, null)",
+                enrollmentService.search(null, "FA26", "AI", null));
+    }
 
     // ===== Part E =====
     private void todo20() { title("TODO 20: enroll student"); }
