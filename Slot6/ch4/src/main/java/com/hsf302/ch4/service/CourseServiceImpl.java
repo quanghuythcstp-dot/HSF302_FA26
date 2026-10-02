@@ -93,4 +93,29 @@ public class CourseServiceImpl implements CourseService {
         if (n <= 0) throw new IllegalArgumentException("n phải > 0");
         return courseRepository.findTopEnrolled(n);
     }
+
+    // TODO 23a — xóa thẳng (sẽ lỗi FK nếu còn sinh viên)
+    @Override
+    @org.springframework.transaction.annotation.Transactional
+    public void deleteCourseDirectly(String code) {
+        com.hsf302.ch4.pojo.Course c = courseRepository.findByCode(code)
+                .orElseThrow(() -> new IllegalArgumentException("Course not found: " + code));
+        courseRepository.delete(c);
+        courseRepository.flush(); // flush ngay để bắt FK violation
+    }
+
+    // TODO 23b — xóa đúng cách: gỡ khỏi owning side rồi mới xóa
+    @Override
+    @org.springframework.transaction.annotation.Transactional
+    public int deleteCourse(String code) {
+        com.hsf302.ch4.pojo.Course c = courseRepository.findByCode(code)
+                .orElseThrow(() -> new IllegalArgumentException("Course not found: " + code));
+        int count = c.getStudents().size();
+        // gỡ khóa khỏi owning side của từng sinh viên
+        for (com.hsf302.ch4.pojo.Student s : new java.util.HashSet<>(c.getStudents())) {
+            s.unenroll(c);
+        }
+        courseRepository.delete(c);
+        return count;
+    }
 }

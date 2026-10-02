@@ -35,4 +35,8 @@ public interface CourseService {
 
     // TODO 17
     List<com.hsf302.ch4.dto.CourseEnrollmentCount> findTopEnrolled(int n);
+
+    // TODO 23
+    void deleteCourseDirectly(String code);
+    int deleteCourse(String code);
 }

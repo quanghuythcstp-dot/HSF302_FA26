@@ -288,6 +288,19 @@ public class Exercise2Runner implements CommandLineRunner {
                 () -> enrollmentService.switchCourse("SE001", "PRJ301", "AIL303"));
         printList("SE001 courses after switch 2 (rollback)", enrollmentService.getCoursesOfStudent("SE001"));
     }
-    private void todo23() { title("TODO 23: delete course safely"); }
+    private void todo23() {
+        title("TODO 23: delete course safely");
+
+        // (a) xóa thẳng IAA202 (đang có 2 SV) → bắt DataIntegrityViolationException
+        attempt("(a) deleteCourseDirectly IAA202 (FAIL - FK)",
+                () -> courseService.deleteCourseDirectly("IAA202"));
+
+        // (b) xóa đúng cách: gỡ sinh viên khỏi owning side trước
+        int removed = courseService.deleteCourse("IAA202");
+        System.out.println("(b) Removed " + removed + " students from IAA202, then deleted");
+
+        printList("Courses remaining", courseService.findAllOrderByCode());
+        printList("Courses of IA002", enrollmentService.getCoursesOfStudent("IA002"));
+    }
     private void todo24() { title("TODO 24: remove enrollments of inactive students"); }
 }
