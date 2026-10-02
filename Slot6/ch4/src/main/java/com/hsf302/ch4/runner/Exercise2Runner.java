@@ -167,7 +167,32 @@ public class Exercise2Runner implements CommandLineRunner {
         // (b) sinh viên đăng ký nhiều hơn 2 khóa
         printList("(b) Students with more than 2 courses", enrollmentService.findStudentsWithMoreThan(2));
     }
-    private void todo16() { title("TODO 16: lazy + join fetch + entity graph"); }
+    private void todo16() {
+        title("TODO 16: lazy + join fetch + entity graph");
+
+        // (a) gọi getCourses() ngoài transaction → LazyInitializationException
+        try {
+            com.hsf302.ch4.pojo.Student s = studentService.findByStudentCode("SE001").orElseThrow();
+            int size = s.getCourses().size();
+            System.out.println("Size: " + size);
+        } catch (Exception e) {
+            System.out.println("(a) Exception: " + e.getClass().getSimpleName() + " - " + e.getMessage());
+        }
+
+        // (b) JOIN FETCH → load student kèm courses trong 1 query
+        com.hsf302.ch4.pojo.Student s = enrollmentService.getStudentWithCourses("SE001");
+        System.out.println("(b) " + s.getStudentCode() + " courses:");
+        s.getCourses().stream()
+                .sorted(java.util.Comparator.comparing(com.hsf302.ch4.pojo.Course::getCode))
+                .forEach(c -> System.out.println("   " + c));
+
+        // (c) @EntityGraph → load course SWP391 kèm students
+        com.hsf302.ch4.pojo.Course c = courseService.getWithStudents("SWP391");
+        System.out.println("(c) " + c.getCode() + " students:");
+        c.getStudents().stream()
+                .sorted(java.util.Comparator.comparing(com.hsf302.ch4.pojo.Student::getFullName))
+                .forEach(st -> System.out.println("   " + st));
+    }
     private void todo17() { title("TODO 17: top enrolled courses native sql"); }
     private void todo18() { title("TODO 18: enrollment view interface projection"); }
     private void todo19() { title("TODO 19: paginate students of course"); }

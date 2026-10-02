@@ -98,4 +98,11 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         if (n < 0) throw new IllegalArgumentException("n phải >= 0");
         return studentRepository.findStudentsWithMoreThan(n);
     }
+
+    // TODO 16
+    @Override
+    public Student getStudentWithCourses(String studentCode) {
+        return studentRepository.findByStudentCodeWithCourses(studentCode)
+                .orElseThrow(() -> new IllegalArgumentException("Student not found: " + studentCode));
+    }
 }
