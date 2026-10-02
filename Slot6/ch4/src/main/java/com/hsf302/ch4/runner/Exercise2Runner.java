@@ -106,7 +106,18 @@ public class Exercise2Runner implements CommandLineRunner {
         // (c) students ACTIVE đăng ký PRJ301
         printList("(c) Active students of PRJ301", enrollmentService.findActiveStudentsInCourse("PRJ301"));
     }
-    private void todo10() { title("TODO 10: courses by student and department with distinct"); }
+    private void todo10() {
+        title("TODO 10: courses by student and department with distinct");
+
+        // (a) courses của SE002 (từ inverse side Students_StudentCode)
+        printList("(a) Courses of SE002", courseService.findCoursesOfStudent("SE002"));
+
+        // (b) courses có SV khoa AI — không Distinct (có thể trùng)
+        printList("(b1) Courses of AI dept - no Distinct", courseService.findCoursesOfDepartment("AI", false));
+
+        // (b) courses có SV khoa AI — có Distinct (loại trùng)
+        printList("(b2) Courses of AI dept - Distinct", courseService.findCoursesOfDepartment("AI", true));
+    }
     private void todo11() { title("TODO 11: unenrolled students and empty courses"); }
 
     // ===== Part D =====
