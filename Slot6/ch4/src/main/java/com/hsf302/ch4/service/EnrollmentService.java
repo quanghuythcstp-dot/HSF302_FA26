@@ -41,4 +41,7 @@ public interface EnrollmentService {
 
     // TODO 25
     List<com.hsf302.ch4.pojo.Student> search(String courseCode, String semester, String deptCode, Double minGpa);
+
+    // TODO 20
+    void enroll(String studentCode, String courseCode);
 }

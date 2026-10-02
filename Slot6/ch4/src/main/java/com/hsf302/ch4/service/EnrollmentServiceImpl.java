@@ -135,4 +135,21 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         return studentRepository.findAll(spec,
                 org.springframework.data.domain.Sort.by("fullName"));
     }
+
+    // TODO 20
+    @Override
+    @org.springframework.transaction.annotation.Transactional
+    public void enroll(String studentCode, String courseCode) {
+        com.hsf302.ch4.pojo.Student s = getStudent(studentCode);
+        com.hsf302.ch4.pojo.Course c = getCourse(courseCode);
+
+        if (!s.isActive())
+            throw new IllegalStateException("Student is inactive: " + studentCode);
+        if (s.getCourses().contains(c))
+            throw new IllegalStateException("Already enrolled: " + studentCode + " -> " + courseCode);
+        if (c.getStudents().size() >= c.getCapacity())
+            throw new IllegalStateException("Course is full: " + courseCode);
+
+        s.enroll(c); // dirty checking → INSERT vào student_courses
+    }
 }
