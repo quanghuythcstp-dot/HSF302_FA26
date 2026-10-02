@@ -202,7 +202,16 @@ public class Exercise2Runner implements CommandLineRunner {
                         c.getCode(), c.getName(), c.getEnrolled())
         );
     }
-    private void todo18() { title("TODO 18: enrollment view interface projection"); }
+    private void todo18() {
+        title("TODO 18: enrollment view interface projection");
+
+        // bảng đăng ký của sinh viên khoa AI
+        enrollmentService.getEnrollmentsOfDepartment("AI").forEach(e ->
+                System.out.printf("   %-6s | %-20s | %-6s | %-42s | %d credits%n",
+                        e.getStudentCode(), e.getFullName(),
+                        e.getCourseCode(), e.getCourseName(), e.getCredits())
+        );
+    }
     private void todo19() { title("TODO 19: paginate students of course"); }
 
     // ===== Bonus =====

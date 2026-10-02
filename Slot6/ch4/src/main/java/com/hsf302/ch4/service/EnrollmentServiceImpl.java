@@ -105,4 +105,10 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         return studentRepository.findByStudentCodeWithCourses(studentCode)
                 .orElseThrow(() -> new IllegalArgumentException("Student not found: " + studentCode));
     }
+
+    // TODO 18
+    @Override
+    public List<com.hsf302.ch4.dto.EnrollmentView> getEnrollmentsOfDepartment(String deptCode) {
+        return studentRepository.getEnrollmentsOfDepartment(deptCode);
+    }
 }
