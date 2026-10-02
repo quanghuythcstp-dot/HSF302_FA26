@@ -22,4 +22,7 @@ public interface EnrollmentService {
 
     // TODO 12
     List<Student> findGoodStudentsInCourse(String courseCode, double minGpa);
+
+    // TODO 14
+    List<com.hsf302.ch4.dto.StudentCreditDTO> getCreditSummary(int minCredits);
 }

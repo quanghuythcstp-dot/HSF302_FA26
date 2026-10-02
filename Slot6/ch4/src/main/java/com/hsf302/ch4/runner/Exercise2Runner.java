@@ -149,7 +149,15 @@ public class Exercise2Runner implements CommandLineRunner {
                         s.avgGpa() == null ? "null" : String.format("%.3f", s.avgGpa()))
         );
     }
-    private void todo14() { title("TODO 14: group by sum having"); }
+    private void todo14() {
+        title("TODO 14: group by sum having");
+
+        // sinh viên có tổng tín chỉ >= 7, sắp xếp tổng TC giảm dần rồi fullName
+        enrollmentService.getCreditSummary(7).forEach(s ->
+                System.out.printf("   %-6s | %-20s | %d courses | %d credits%n",
+                        s.studentCode(), s.fullName(), s.courseCount(), s.totalCredits())
+        );
+    }
     private void todo15() { title("TODO 15: full courses and busy students with size"); }
     private void todo16() { title("TODO 16: lazy + join fetch + entity graph"); }
     private void todo17() { title("TODO 17: top enrolled courses native sql"); }

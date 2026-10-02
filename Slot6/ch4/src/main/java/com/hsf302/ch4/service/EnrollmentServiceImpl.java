@@ -84,4 +84,11 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         if (minGpa < 0 || minGpa > 4) throw new IllegalArgumentException("minGpa phải trong [0, 4]");
         return studentRepository.findGoodStudentsInCourse(courseCode, minGpa);
     }
+
+    // TODO 14
+    @Override
+    public List<com.hsf302.ch4.dto.StudentCreditDTO> getCreditSummary(int minCredits) {
+        if (minCredits < 0) throw new IllegalArgumentException("minCredits phải >= 0");
+        return studentRepository.getCreditSummary(minCredits);
+    }
 }

@@ -101,4 +101,12 @@ public interface StudentRepository extends JpaRepository<Student, Long>,
     // TODO 12 (EX2)
     @Query("SELECT s FROM Student s JOIN s.courses c WHERE c.code = :courseCode AND s.gpa >= :minGpa ORDER BY s.gpa DESC")
     List<Student> findGoodStudentsInCourse(@Param("courseCode") String courseCode, @Param("minGpa") double minGpa);
+
+    // TODO 14 (EX2)
+    @Query("SELECT new com.hsf302.ch4.dto.StudentCreditDTO(s.studentCode, s.fullName, COUNT(c), SUM(c.credits)) " +
+           "FROM Student s JOIN s.courses c " +
+           "GROUP BY s.studentCode, s.fullName " +
+           "HAVING SUM(c.credits) >= :minCredits " +
+           "ORDER BY SUM(c.credits) DESC, s.fullName")
+    List<com.hsf302.ch4.dto.StudentCreditDTO> getCreditSummary(@Param("minCredits") int minCredits);
 }
