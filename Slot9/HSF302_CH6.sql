@@ -1,0 +1,13 @@
+IF DB_ID(N'HSF302_CH6') IS NULL
+    CREATE DATABASE HSF302_CH6;
+GO
+USE HSF302_CH6;
+GO
+CREATE TABLE students (
+    id     BIGINT IDENTITY(1,1) PRIMARY KEY,
+    name   NVARCHAR(50)  NOT NULL,
+    email  NVARCHAR(100) NOT NULL CONSTRAINT UK_students_email UNIQUE,
+    age    INT           NOT NULL,
+    major  NVARCHAR(20)  NOT NULL,
+    gpa    FLOAT         NOT NULL
+);
