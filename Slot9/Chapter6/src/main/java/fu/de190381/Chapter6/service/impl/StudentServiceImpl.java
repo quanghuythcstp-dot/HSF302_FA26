@@ -1,7 +1,9 @@
 package fu.de190381.Chapter6.service.impl;
 
 import fu.de190381.Chapter6.dto.StudentForm;
+import fu.de190381.Chapter6.entity.Major;
 import fu.de190381.Chapter6.entity.Student;
+import fu.de190381.Chapter6.repository.MajorRepository;
 import fu.de190381.Chapter6.repository.StudentRepository;
 import fu.de190381.Chapter6.service.StudentService;
 import org.springframework.data.domain.Page;
@@ -19,9 +21,12 @@ import java.util.Optional;
 public class StudentServiceImpl implements StudentService {
 
     private final StudentRepository studentRepository;
+    private final MajorRepository majorRepository;
 
-    public StudentServiceImpl(StudentRepository studentRepository) {
+    public StudentServiceImpl(StudentRepository studentRepository,
+                              MajorRepository majorRepository) {
         this.studentRepository = studentRepository;
+        this.majorRepository   = majorRepository;
     }
 
     @Override
@@ -111,7 +116,13 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<String> getMajors() {
-        return List.of("CNTT", "KTPM", "HTTT", "ATTT", "MMT");
+        return majorRepository.findAll()
+                .stream().map(Major::getCode).toList();
+    }
+
+    @Override
+    public List<Major> getMajorEntities() {
+        return majorRepository.findAll();
     }
 
     @Override

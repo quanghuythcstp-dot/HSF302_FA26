@@ -28,10 +28,15 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-    /** Chạy trước MỌI handler → view nào cũng có ${majors} */
+    /** Chạy trước MỌI handler → view nào cũng có ${majors} và ${majorEntities} */
     @ModelAttribute("majors")
     public List<String> majors() {
         return studentService.getMajors();
+    }
+
+    @ModelAttribute("majorEntities")
+    public List<fu.de190381.Chapter6.entity.Major> majorEntities() {
+        return studentService.getMajorEntities();
     }
 
     // ==================== READ ALL ====================

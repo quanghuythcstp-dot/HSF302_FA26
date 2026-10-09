@@ -32,6 +32,11 @@ public class Student {
     @Column(name = "major", nullable = false, length = 20)
     private String major;
 
+    /** Quan hệ ManyToOne với bảng majors (nullable để tương thích dữ liệu cũ) */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "major_id")
+    private Major majorEntity;
+
     @NotNull(message = "GPA không được để trống")
     @DecimalMin(value = "0.0", message = "GPA tối thiểu là 0.0")
     @DecimalMax(value = "4.0", message = "GPA tối đa là 4.0")
@@ -68,6 +73,9 @@ public class Student {
 
     public String getMajor() { return major; }
     public void setMajor(String major) { this.major = major; }
+
+    public Major getMajorEntity() { return majorEntity; }
+    public void setMajorEntity(Major majorEntity) { this.majorEntity = majorEntity; }
 
     public Double getGpa() { return gpa; }
     public void setGpa(Double gpa) { this.gpa = gpa; }

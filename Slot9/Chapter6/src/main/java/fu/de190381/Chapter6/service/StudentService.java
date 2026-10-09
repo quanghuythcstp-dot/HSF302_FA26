@@ -41,4 +41,7 @@ public interface StudentService {
     boolean isEmailTaken(String email, Long excludeId);
 
     List<String> getMajors();
+
+    /** Trả về danh sách entity Major (dùng cho dropdown bài 5) */
+    List<fu.de190381.Chapter6.entity.Major> getMajorEntities();
 }
