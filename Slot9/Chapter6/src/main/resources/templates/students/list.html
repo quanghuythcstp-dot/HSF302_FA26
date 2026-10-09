@@ -101,8 +101,36 @@
     </div>
 
     <div th:unless="${#lists.isEmpty(students)}" class="text-muted mt-2">
-        <small>Tổng: <strong th:text="${#lists.size(students)}">0</strong> sinh viên</small>
+        <small>Tổng: <strong th:text="${page.totalElements}">0</strong> sinh viên</small>
     </div>
+
+    <!-- Thanh phân trang -->
+    <nav th:if="${page.totalPages > 1}" class="mt-3">
+        <ul class="pagination justify-content-center">
+            <!-- Prev -->
+            <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/students(page=${currentPage - 1}, size=5, keyword=${keyword})}">
+                    &laquo;
+                </a>
+            </li>
+            <!-- Số trang -->
+            <li class="page-item"
+                th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
+                th:classappend="${i == currentPage} ? 'active'">
+                <a class="page-link"
+                   th:href="@{/students(page=${i}, size=5, keyword=${keyword})}"
+                   th:text="${i + 1}">1</a>
+            </li>
+            <!-- Next -->
+            <li class="page-item" th:classappend="${currentPage == page.totalPages - 1} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/students(page=${currentPage + 1}, size=5, keyword=${keyword})}">
+                    &raquo;
+                </a>
+            </li>
+        </ul>
+    </nav>
 
 </section>
 </body>

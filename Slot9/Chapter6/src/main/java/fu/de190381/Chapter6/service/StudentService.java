@@ -1,6 +1,8 @@
 package fu.de190381.Chapter6.service;
 
 import fu.de190381.Chapter6.entity.Student;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,6 +13,9 @@ public interface StudentService {
 
     /** Tìm kiếm theo keyword (tên hoặc email). Trả về tất cả nếu keyword rỗng */
     List<Student> search(String keyword);
+
+    /** Phân trang + tìm kiếm */
+    Page<Student> findPaged(String keyword, Pageable pageable);
 
     Optional<Student> findById(Long id);
 

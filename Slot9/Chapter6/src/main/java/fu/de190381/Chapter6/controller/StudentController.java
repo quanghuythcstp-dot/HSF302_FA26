@@ -4,6 +4,9 @@ import fu.de190381.Chapter6.entity.Student;
 import fu.de190381.Chapter6.service.StudentService;
 import jakarta.validation.Valid;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,9 +37,17 @@ public class StudentController {
 
     @GetMapping
     public String list(@RequestParam(value = "keyword", required = false) String keyword,
+                       @RequestParam(value = "page", defaultValue = "0") int page,
+                       @RequestParam(value = "size", defaultValue = "5") int size,
                        Model model) {
-        model.addAttribute("students", studentService.search(keyword));
+        PageRequest pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "id"));
+        Page<Student> pageResult = studentService.findPaged(keyword, pageable);
+
+        model.addAttribute("students", pageResult.getContent());
+        model.addAttribute("page", pageResult);
         model.addAttribute("keyword", keyword != null ? keyword : "");
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", pageResult.getTotalPages());
         return "students/list";
     }
 

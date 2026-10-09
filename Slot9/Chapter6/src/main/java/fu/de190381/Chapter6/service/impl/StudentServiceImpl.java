@@ -3,6 +3,9 @@ package fu.de190381.Chapter6.service.impl;
 import fu.de190381.Chapter6.entity.Student;
 import fu.de190381.Chapter6.repository.StudentRepository;
 import fu.de190381.Chapter6.service.StudentService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -85,5 +88,12 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public List<String> getMajors() {
         return List.of("CNTT", "KTPM", "HTTT", "ATTT", "MMT");
+    }
+
+    @Override
+    public Page<Student> findPaged(String keyword, Pageable pageable) {
+        String kw = (keyword == null || keyword.isBlank()) ? "" : keyword.trim();
+        return studentRepository
+                .findByNameContainingIgnoreCaseOrEmailContainingIgnoreCase(kw, kw, pageable);
     }
 }
