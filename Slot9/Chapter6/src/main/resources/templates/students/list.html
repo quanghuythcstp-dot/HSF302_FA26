@@ -50,12 +50,36 @@
                 <thead>
                 <tr>
                     <th>#</th>
-                    <th>ID</th>
-                    <th>Họ tên</th>
+                    <th>
+                        <a th:href="@{/students(sort='id', dir=${sortField == 'id'} ? ${reversDir} : 'asc', keyword=${keyword}, page=0, size=5)}"
+                           class="text-white text-decoration-none">
+                            ID
+                            <i class="bi" th:classappend="${sortField == 'id'} ? (${sortDir == 'asc'} ? 'bi-sort-up' : 'bi-sort-down') : 'bi-arrow-down-up'"></i>
+                        </a>
+                    </th>
+                    <th>
+                        <a th:href="@{/students(sort='name', dir=${sortField == 'name'} ? ${reversDir} : 'asc', keyword=${keyword}, page=0, size=5)}"
+                           class="text-white text-decoration-none">
+                            Họ tên
+                            <i class="bi" th:classappend="${sortField == 'name'} ? (${sortDir == 'asc'} ? 'bi-sort-up' : 'bi-sort-down') : 'bi-arrow-down-up'"></i>
+                        </a>
+                    </th>
                     <th>Email</th>
-                    <th>Tuổi</th>
+                    <th>
+                        <a th:href="@{/students(sort='age', dir=${sortField == 'age'} ? ${reversDir} : 'asc', keyword=${keyword}, page=0, size=5)}"
+                           class="text-white text-decoration-none">
+                            Tuổi
+                            <i class="bi" th:classappend="${sortField == 'age'} ? (${sortDir == 'asc'} ? 'bi-sort-up' : 'bi-sort-down') : 'bi-arrow-down-up'"></i>
+                        </a>
+                    </th>
                     <th>Chuyên ngành</th>
-                    <th>GPA</th>
+                    <th>
+                        <a th:href="@{/students(sort='gpa', dir=${sortField == 'gpa'} ? ${reversDir} : 'asc', keyword=${keyword}, page=0, size=5)}"
+                           class="text-white text-decoration-none">
+                            GPA
+                            <i class="bi" th:classappend="${sortField == 'gpa'} ? (${sortDir == 'asc'} ? 'bi-sort-up' : 'bi-sort-down') : 'bi-arrow-down-up'"></i>
+                        </a>
+                    </th>
                     <th class="text-center">Thao tác</th>
                 </tr>
                 </thead>
@@ -110,7 +134,7 @@
             <!-- Prev -->
             <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
                 <a class="page-link"
-                   th:href="@{/students(page=${currentPage - 1}, size=5, keyword=${keyword})}">
+                   th:href="@{/students(page=${currentPage - 1}, size=5, keyword=${keyword}, sort=${sortField}, dir=${sortDir})}">
                     &laquo;
                 </a>
             </li>
@@ -119,13 +143,13 @@
                 th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
                 th:classappend="${i == currentPage} ? 'active'">
                 <a class="page-link"
-                   th:href="@{/students(page=${i}, size=5, keyword=${keyword})}"
+                   th:href="@{/students(page=${i}, size=5, keyword=${keyword}, sort=${sortField}, dir=${sortDir})}"
                    th:text="${i + 1}">1</a>
             </li>
             <!-- Next -->
             <li class="page-item" th:classappend="${currentPage == page.totalPages - 1} ? 'disabled'">
                 <a class="page-link"
-                   th:href="@{/students(page=${currentPage + 1}, size=5, keyword=${keyword})}">
+                   th:href="@{/students(page=${currentPage + 1}, size=5, keyword=${keyword}, sort=${sortField}, dir=${sortDir})}">
                     &raquo;
                 </a>
             </li>
