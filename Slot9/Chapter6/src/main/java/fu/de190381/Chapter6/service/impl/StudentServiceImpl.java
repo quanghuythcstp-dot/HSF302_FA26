@@ -1,5 +1,6 @@
 package fu.de190381.Chapter6.service.impl;
 
+import fu.de190381.Chapter6.dto.StudentForm;
 import fu.de190381.Chapter6.entity.Student;
 import fu.de190381.Chapter6.repository.StudentRepository;
 import fu.de190381.Chapter6.service.StudentService;
@@ -53,6 +54,15 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     @Transactional
+    public Student createFromForm(StudentForm form) {
+        Student student = new Student(
+                form.getName(), form.getEmail(),
+                form.getAge(), form.getMajor(), form.getGpa());
+        return studentRepository.save(student);
+    }
+
+    @Override
+    @Transactional
     public boolean update(Long id, Student data) {
         return studentRepository.findById(id)
                 .map(existing -> {
@@ -61,7 +71,21 @@ public class StudentServiceImpl implements StudentService {
                     existing.setAge(data.getAge());
                     existing.setMajor(data.getMajor());
                     existing.setGpa(data.getGpa());
-                    // Không cần gọi save(): dirty checking tự sinh UPDATE khi commit
+                    return true;
+                })
+                .orElse(false);
+    }
+
+    @Override
+    @Transactional
+    public boolean updateFromForm(Long id, StudentForm form) {
+        return studentRepository.findById(id)
+                .map(existing -> {
+                    existing.setName(form.getName());
+                    existing.setEmail(form.getEmail());
+                    existing.setAge(form.getAge());
+                    existing.setMajor(form.getMajor());
+                    existing.setGpa(form.getGpa());
                     return true;
                 })
                 .orElse(false);

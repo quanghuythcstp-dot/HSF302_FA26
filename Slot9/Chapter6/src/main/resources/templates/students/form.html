@@ -26,8 +26,8 @@
                 </div>
                 <div class="card-body">
 
-                    <form th:action="${isEdit} ? @{/students/{id}/edit(id=${student.id})} : @{/students/create}"
-                          th:object="${student}"
+                    <form th:action="${isEdit} ? @{/students/{id}/edit(id=${studentForm.id})} : @{/students/create}"
+                          th:object="${studentForm}"
                           method="post"
                           novalidate>
 

@@ -1,5 +1,6 @@
 package fu.de190381.Chapter6.service;
 
+import fu.de190381.Chapter6.dto.StudentForm;
 import fu.de190381.Chapter6.entity.Student;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,8 +22,14 @@ public interface StudentService {
 
     Student create(Student student);
 
+    /** Tạo sinh viên từ DTO */
+    Student createFromForm(StudentForm form);
+
     /** @return true nếu tìm thấy và cập nhật; false nếu không tồn tại id */
     boolean update(Long id, Student data);
+
+    /** Cập nhật từ DTO */
+    boolean updateFromForm(Long id, StudentForm form);
 
     /** @return true nếu xoá được; false nếu không tồn tại id */
     boolean delete(Long id);

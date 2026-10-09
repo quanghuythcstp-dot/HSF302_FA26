@@ -1,5 +1,6 @@
 package fu.de190381.Chapter6.controller;
 
+import fu.de190381.Chapter6.dto.StudentForm;
 import fu.de190381.Chapter6.entity.Student;
 import fu.de190381.Chapter6.service.StudentService;
 import jakarta.validation.Valid;
@@ -77,24 +78,24 @@ public class StudentController {
 
     @GetMapping("/create")
     public String showCreateForm(Model model) {
-        model.addAttribute("student", new Student());
+        model.addAttribute("studentForm", new StudentForm());
         return formView(model, false);
     }
 
     @PostMapping("/create")
-    public String create(@Valid @ModelAttribute("student") Student student,
+    public String create(@Valid @ModelAttribute("studentForm") StudentForm form,
                          BindingResult bindingResult,
                          Model model,
                          RedirectAttributes ra) {
         if (!bindingResult.hasFieldErrors("email")
-                && studentService.isEmailTaken(student.getEmail(), null)) {
+                && studentService.isEmailTaken(form.getEmail(), null)) {
             bindingResult.rejectValue("email", "duplicate", "Email đã tồn tại");
         }
         if (bindingResult.hasErrors()) {
             return formView(model, false);
         }
         try {
-            studentService.create(student);
+            studentService.createFromForm(form);
         } catch (DataIntegrityViolationException e) {
             bindingResult.rejectValue("email", "duplicate", "Email đã tồn tại");
             return formView(model, false);
@@ -109,7 +110,7 @@ public class StudentController {
     public String showEditForm(@PathVariable("id") Long id, Model model, RedirectAttributes ra) {
         return studentService.findById(id)
                 .map(student -> {
-                    model.addAttribute("student", student);
+                    model.addAttribute("studentForm", StudentForm.fromEntity(student));
                     return formView(model, true);
                 })
                 .orElseGet(() -> {
@@ -120,21 +121,21 @@ public class StudentController {
 
     @PostMapping("/{id}/edit")
     public String update(@PathVariable("id") Long id,
-                         @Valid @ModelAttribute("student") Student student,
+                         @Valid @ModelAttribute("studentForm") StudentForm form,
                          BindingResult bindingResult,
                          Model model,
                          RedirectAttributes ra) {
-        student.setId(id);
+        form.setId(id);
 
         if (!bindingResult.hasFieldErrors("email")
-                && studentService.isEmailTaken(student.getEmail(), id)) {
+                && studentService.isEmailTaken(form.getEmail(), id)) {
             bindingResult.rejectValue("email", "duplicate", "Email đã được sinh viên khác sử dụng");
         }
         if (bindingResult.hasErrors()) {
             return formView(model, true);
         }
         try {
-            if (studentService.update(id, student)) {
+            if (studentService.updateFromForm(id, form)) {
                 ra.addFlashAttribute("successMsg", "Cập nhật thành công!");
             } else {
                 ra.addFlashAttribute("errorMsg", "Không tìm thấy sinh viên ID: " + id);
