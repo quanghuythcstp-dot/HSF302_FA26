@@ -1,0 +1,8 @@
+/* CSS riêng — nạp SAU Bootstrap để không bị ghi đè */
+body {
+    background-color: #f8f9fa;
+}
+
+.table th {
+    white-space: nowrap;
+}
