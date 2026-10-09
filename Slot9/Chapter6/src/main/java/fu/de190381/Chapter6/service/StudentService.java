@@ -9,6 +9,9 @@ public interface StudentService {
 
     List<Student> findAll();
 
+    /** Tìm kiếm theo keyword (tên hoặc email). Trả về tất cả nếu keyword rỗng */
+    List<Student> search(String keyword);
+
     Optional<Student> findById(Long id);
 
     Student create(Student student);
