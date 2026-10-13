@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{fragments/layout :: commonHead('Trang chủ')}"></th:block>
+</head>
+<body>
+
+<nav th:replace="~{fragments/layout :: navbar('home')}"></nav>
+
+<main class="container">
+    <th:block th:replace="~{fragments/layout :: alerts}"></th:block>
+
+    <div class="p-4 bg-white rounded shadow-sm mb-4">
+        <h1 class="h3">Chào mừng đến với Spring Boot + Thymeleaf!</h1>
+        <p class="text-muted mb-0">Chọn chức năng bên dưới hoặc trên menu.</p>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-md-3">
+            <a class="card card-body text-decoration-none h-100" th:href="@{/sinhvien}">
+                <i class="bi bi-people fs-4 mb-2"></i> Sinh viên
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a class="card card-body text-decoration-none h-100" th:href="@{/sanpham/them}">
+                <i class="bi bi-box-seam fs-4 mb-2"></i> Sản phẩm
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a class="card card-body text-decoration-none h-100" th:href="@{/khoahoc}">
+                <i class="bi bi-journal-bookmark fs-4 mb-2"></i> Khóa học
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a class="card card-body text-decoration-none h-100" th:href="@{/dangky}">
+                <i class="bi bi-person-plus fs-4 mb-2"></i> Đăng ký
+            </a>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>
