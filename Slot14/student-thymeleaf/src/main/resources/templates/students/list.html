@@ -80,13 +80,49 @@
             <thead class="table-dark">
             <tr>
                 <th>#</th>
-                <th>Mã SV</th>
-                <th>Họ tên</th>
+                <!-- Tiêu đề cột sắp xếp: click để toggle asc/desc -->
+                <th>
+                    <a th:href="@{/students(keyword=${keyword}, sort='studentCode', dir=${sort == 'studentCode'} ? ${reverseDir} : 'asc')}"
+                       class="text-white text-decoration-none">
+                        Mã SV
+                        <span th:if="${sort == 'studentCode'}"
+                              th:text="${dir == 'asc'} ? '▲' : '▼'"></span>
+                    </a>
+                </th>
+                <th>
+                    <a th:href="@{/students(keyword=${keyword}, sort='fullName', dir=${sort == 'fullName'} ? ${reverseDir} : 'asc')}"
+                       class="text-white text-decoration-none">
+                        Họ tên
+                        <span th:if="${sort == 'fullName'}"
+                              th:text="${dir == 'asc'} ? '▲' : '▼'"></span>
+                    </a>
+                </th>
                 <th>Email</th>
-                <th>Ngày sinh</th>
+                <th>
+                    <a th:href="@{/students(keyword=${keyword}, sort='dateOfBirth', dir=${sort == 'dateOfBirth'} ? ${reverseDir} : 'asc')}"
+                       class="text-white text-decoration-none">
+                        Ngày sinh
+                        <span th:if="${sort == 'dateOfBirth'}"
+                              th:text="${dir == 'asc'} ? '▲' : '▼'"></span>
+                    </a>
+                </th>
                 <th>Tuổi</th>
-                <th>Ngành</th>
-                <th>GPA</th>
+                <th>
+                    <a th:href="@{/students(keyword=${keyword}, sort='major', dir=${sort == 'major'} ? ${reverseDir} : 'asc')}"
+                       class="text-white text-decoration-none">
+                        Ngành
+                        <span th:if="${sort == 'major'}"
+                              th:text="${dir == 'asc'} ? '▲' : '▼'"></span>
+                    </a>
+                </th>
+                <th>
+                    <a th:href="@{/students(keyword=${keyword}, sort='gpa', dir=${sort == 'gpa'} ? ${reverseDir} : 'asc')}"
+                       class="text-white text-decoration-none">
+                        GPA
+                        <span th:if="${sort == 'gpa'}"
+                              th:text="${dir == 'asc'} ? '▲' : '▼'"></span>
+                    </a>
+                </th>
                 <th>Xếp loại</th>
                 <th>Trạng thái</th>
                 <th>Thao tác</th>

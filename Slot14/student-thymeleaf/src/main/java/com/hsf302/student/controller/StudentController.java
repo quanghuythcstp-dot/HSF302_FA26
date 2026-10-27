@@ -9,10 +9,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import org.springframework.data.domain.Sort;
+
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/students")
@@ -35,15 +38,33 @@ public class StudentController {
         return majors;
     }
 
-    // TODO 4: GET /students?keyword=...
+    // Các cột được phép sắp xếp (tránh SQL injection qua tên field)
+    private static final Set<String> SORTABLE_FIELDS =
+            Set.of("id", "studentCode", "fullName", "gpa", "dateOfBirth", "major");
+
+    // TODO 4: GET /students?keyword=...&sort=gpa&dir=desc
     @GetMapping
-    public String list(@RequestParam(required = false) String keyword, Model model) {
-        List<Student> students = studentService.search(keyword);
+    public String list(@RequestParam(required = false) String keyword,
+                       @RequestParam(required = false, defaultValue = "id") String sort,
+                       @RequestParam(required = false, defaultValue = "asc") String dir,
+                       Model model) {
+
+        // Whitelist sort field để tránh lỗi
+        if (!SORTABLE_FIELDS.contains(sort)) sort = "id";
+        // Toggle direction: nếu nhấn cùng cột thì đổi chiều, ngược lại mặc định asc
+        Sort.Direction direction = "desc".equalsIgnoreCase(dir)
+                ? Sort.Direction.DESC : Sort.Direction.ASC;
+
+        List<Student> students = studentService.searchAndSort(keyword, sort, direction);
         model.addAttribute("students", students);
         model.addAttribute("keyword", keyword);
         model.addAttribute("totalStudents", students.size());
         model.addAttribute("avgGpa", studentService.averageGpa(students));
         model.addAttribute("activeMenu", "list");
+        model.addAttribute("sort", sort);
+        model.addAttribute("dir", dir);
+        // Chiều ngược lại để dùng trong link toggle
+        model.addAttribute("reverseDir", "asc".equalsIgnoreCase(dir) ? "desc" : "asc");
         return "students/list";
     }
 

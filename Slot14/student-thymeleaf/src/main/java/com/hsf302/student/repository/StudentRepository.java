@@ -1,6 +1,7 @@
 package com.hsf302.student.repository;
 
 import com.hsf302.student.entity.Student;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,6 +13,10 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     // TODO 19.1: Tìm theo mã SV HOẶC họ tên chứa từ khóa, không phân biệt hoa thường, sắp xếp theo id tăng dần
     List<Student> findByStudentCodeContainingIgnoreCaseOrFullNameContainingIgnoreCaseOrderByIdAsc(
             String studentCode, String fullName);
+
+    // Tìm kiếm có hỗ trợ sắp xếp động (dùng cho bài mở rộng)
+    List<Student> findByStudentCodeContainingIgnoreCaseOrFullNameContainingIgnoreCase(
+            String studentCode, String fullName, Sort sort);
 
     // TODO 19.2: Kiểm tra mã SV đã tồn tại (dùng khi THÊM MỚI)
     boolean existsByStudentCodeIgnoreCase(String studentCode);
