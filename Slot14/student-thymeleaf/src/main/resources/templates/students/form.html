@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main}">
+<head>
+    <title th:text="${student.id == null} ? 'Thêm sinh viên' : 'Cập nhật sinh viên'">Form sinh viên</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <h2 th:text="${student.id == null} ? 'Thêm sinh viên mới' : 'Cập nhật sinh viên'">Form</h2>
+    <a th:href="@{/students}" class="btn btn-secondary">← Quay lại</a>
+</section>
+</body>
+</html>

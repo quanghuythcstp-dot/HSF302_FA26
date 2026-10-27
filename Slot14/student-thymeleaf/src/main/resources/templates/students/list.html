@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main}">
+<head>
+    <title>Danh sách sinh viên</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <h2>Danh sách sinh viên</h2>
+    <p>Tổng số: <span th:text="${totalStudents}">0</span> sinh viên</p>
+    <ul>
+        <li th:each="s : ${students}" th:text="${s.studentCode + ' - ' + s.fullName}">SE180001 - Nguyễn Văn An</li>
+    </ul>
+</section>
+</body>
+</html>
