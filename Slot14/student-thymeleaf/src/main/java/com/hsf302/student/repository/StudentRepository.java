@@ -1,6 +1,8 @@
 package com.hsf302.student.repository;
 
 import com.hsf302.student.entity.Student;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -24,6 +26,18 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
     // Lọc theo ngành (không có keyword) + sắp xếp động
     List<Student> findByMajor(String major, Sort sort);
+
+    // ===== Phân trang (bài mở rộng 3) =====
+    // Tìm kiếm keyword có phân trang
+    Page<Student> findByStudentCodeContainingIgnoreCaseOrFullNameContainingIgnoreCase(
+            String studentCode, String fullName, Pageable pageable);
+
+    // Lọc theo ngành có phân trang
+    Page<Student> findByMajor(String major, Pageable pageable);
+
+    // Lọc theo ngành + keyword có phân trang
+    Page<Student> findByMajorAndStudentCodeContainingIgnoreCaseOrMajorAndFullNameContainingIgnoreCase(
+            String major1, String studentCode, String major2, String fullName, Pageable pageable);
 
     // TODO 19.2: Kiểm tra mã SV đã tồn tại (dùng khi THÊM MỚI)
     boolean existsByStudentCodeIgnoreCase(String studentCode);

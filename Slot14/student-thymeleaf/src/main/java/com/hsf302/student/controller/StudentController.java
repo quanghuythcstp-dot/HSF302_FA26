@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 
 import java.util.LinkedHashMap;
@@ -42,29 +43,34 @@ public class StudentController {
     private static final Set<String> SORTABLE_FIELDS =
             Set.of("id", "studentCode", "fullName", "gpa", "dateOfBirth", "major");
 
-    // TODO 4: GET /students?keyword=...&sort=gpa&dir=desc&major=SE
+    // TODO 4: GET /students?keyword=...&sort=gpa&dir=desc&major=SE&page=0
     @GetMapping
     public String list(@RequestParam(required = false) String keyword,
                        @RequestParam(required = false, defaultValue = "id") String sort,
                        @RequestParam(required = false, defaultValue = "asc") String dir,
                        @RequestParam(required = false) String major,
+                       @RequestParam(required = false, defaultValue = "0") int page,
                        Model model) {
 
-        // Whitelist sort field để tránh lỗi
         if (!SORTABLE_FIELDS.contains(sort)) sort = "id";
         Sort.Direction direction = "desc".equalsIgnoreCase(dir)
                 ? Sort.Direction.DESC : Sort.Direction.ASC;
 
-        List<Student> students = studentService.searchAndSort(keyword, major, sort, direction);
-        model.addAttribute("students", students);
-        model.addAttribute("keyword", keyword);
-        model.addAttribute("major", major);
-        model.addAttribute("totalStudents", students.size());
-        model.addAttribute("avgGpa", studentService.averageGpa(students));
-        model.addAttribute("activeMenu", "list");
-        model.addAttribute("sort", sort);
-        model.addAttribute("dir", dir);
-        model.addAttribute("reverseDir", "asc".equalsIgnoreCase(dir) ? "desc" : "asc");
+        Page<Student> pageResult = studentService.searchPage(keyword, major, sort, direction, page);
+        // Thống kê trên toàn bộ danh sách (không chỉ trang hiện tại)
+        double avgGpa = studentService.averageGpa(pageResult.getContent());
+
+        model.addAttribute("page",         pageResult);
+        model.addAttribute("students",     pageResult.getContent());
+        model.addAttribute("keyword",      keyword);
+        model.addAttribute("major",        major);
+        model.addAttribute("totalStudents",pageResult.getTotalElements());
+        model.addAttribute("avgGpa",       avgGpa);
+        model.addAttribute("activeMenu",   "list");
+        model.addAttribute("sort",         sort);
+        model.addAttribute("dir",          dir);
+        model.addAttribute("reverseDir",   "asc".equalsIgnoreCase(dir) ? "desc" : "asc");
+        model.addAttribute("currentPage",  page);
         return "students/list";
     }
 
