@@ -33,16 +33,26 @@ public class StudentService {
                 .findByStudentCodeContainingIgnoreCaseOrFullNameContainingIgnoreCaseOrderByIdAsc(kw, kw);
     }
 
-    public List<Student> searchAndSort(String keyword, String sortField, Sort.Direction direction) {
+    public List<Student> searchAndSort(String keyword, String major, String sortField, Sort.Direction direction) {
         Sort sort = Sort.by(direction, sortField);
-        if (keyword == null || keyword.isBlank()) {
+        boolean hasKeyword = keyword != null && !keyword.isBlank();
+        boolean hasMajor   = major != null && !major.isBlank();
+
+        if (hasMajor && hasKeyword) {
+            String kw = keyword.trim();
+            return studentRepository
+                    .findByMajorAndStudentCodeContainingIgnoreCaseOrMajorAndFullNameContainingIgnoreCase(
+                            major, kw, major, kw, sort);
+        } else if (hasMajor) {
+            return studentRepository.findByMajor(major, sort);
+        } else if (hasKeyword) {
+            String kw = keyword.trim();
+            return studentRepository
+                    .findByStudentCodeContainingIgnoreCaseOrFullNameContainingIgnoreCase(kw, kw, sort);
+        } else {
             return studentRepository.findAll(sort);
         }
-        String kw = keyword.trim();
-        return studentRepository
-                .findByStudentCodeContainingIgnoreCaseOrFullNameContainingIgnoreCase(kw, kw, sort);
     }
-
     public Optional<Student> findById(Long id) {
         return studentRepository.findById(id);
     }

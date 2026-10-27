@@ -42,28 +42,28 @@ public class StudentController {
     private static final Set<String> SORTABLE_FIELDS =
             Set.of("id", "studentCode", "fullName", "gpa", "dateOfBirth", "major");
 
-    // TODO 4: GET /students?keyword=...&sort=gpa&dir=desc
+    // TODO 4: GET /students?keyword=...&sort=gpa&dir=desc&major=SE
     @GetMapping
     public String list(@RequestParam(required = false) String keyword,
                        @RequestParam(required = false, defaultValue = "id") String sort,
                        @RequestParam(required = false, defaultValue = "asc") String dir,
+                       @RequestParam(required = false) String major,
                        Model model) {
 
         // Whitelist sort field để tránh lỗi
         if (!SORTABLE_FIELDS.contains(sort)) sort = "id";
-        // Toggle direction: nếu nhấn cùng cột thì đổi chiều, ngược lại mặc định asc
         Sort.Direction direction = "desc".equalsIgnoreCase(dir)
                 ? Sort.Direction.DESC : Sort.Direction.ASC;
 
-        List<Student> students = studentService.searchAndSort(keyword, sort, direction);
+        List<Student> students = studentService.searchAndSort(keyword, major, sort, direction);
         model.addAttribute("students", students);
         model.addAttribute("keyword", keyword);
+        model.addAttribute("major", major);
         model.addAttribute("totalStudents", students.size());
         model.addAttribute("avgGpa", studentService.averageGpa(students));
         model.addAttribute("activeMenu", "list");
         model.addAttribute("sort", sort);
         model.addAttribute("dir", dir);
-        // Chiều ngược lại để dùng trong link toggle
         model.addAttribute("reverseDir", "asc".equalsIgnoreCase(dir) ? "desc" : "asc");
         return "students/list";
     }

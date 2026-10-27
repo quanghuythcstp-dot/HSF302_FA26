@@ -18,6 +18,13 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     List<Student> findByStudentCodeContainingIgnoreCaseOrFullNameContainingIgnoreCase(
             String studentCode, String fullName, Sort sort);
 
+    // Lọc theo ngành + tìm kiếm keyword + sắp xếp động
+    List<Student> findByMajorAndStudentCodeContainingIgnoreCaseOrMajorAndFullNameContainingIgnoreCase(
+            String major1, String studentCode, String major2, String fullName, Sort sort);
+
+    // Lọc theo ngành (không có keyword) + sắp xếp động
+    List<Student> findByMajor(String major, Sort sort);
+
     // TODO 19.2: Kiểm tra mã SV đã tồn tại (dùng khi THÊM MỚI)
     boolean existsByStudentCodeIgnoreCase(String studentCode);
 
