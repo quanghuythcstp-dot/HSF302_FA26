@@ -81,6 +81,8 @@ public class DrinkOrderApp extends Application {
         VBox root = new VBox(12, title, form, buttons, lblResult, new Label("Nhật ký sự kiện:"), taLog);
         root.setPadding(new Insets(16));
 
+        registerEvents();
+
         stage.setScene(new Scene(root, 540, 580));
         stage.setTitle("B1 - Controls & Sự kiện");
         stage.show();
@@ -88,4 +90,13 @@ public class DrinkOrderApp extends Application {
     }
 
     public static void main(String[] args) { launch(args); }
+
+    private void registerEvents() {
+        // TODO 4: Cách 1 — method reference
+        btnCalc.setOnAction(this::handleCalc);
+    }
+
+    private void handleCalc(javafx.event.ActionEvent e) {
+        // sẽ hoàn thiện ở TODO 11
+    }
 }
