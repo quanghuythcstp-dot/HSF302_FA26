@@ -94,9 +94,23 @@ public class DrinkOrderApp extends Application {
     private void registerEvents() {
         // TODO 4: Cách 1 — method reference
         btnCalc.setOnAction(this::handleCalc);
+
+        // TODO 5: Cách 2 — lambda
+        btnClear.setOnAction(e -> {
+            reset();
+            log("Bấm Làm lại");
+        });
     }
 
     private void handleCalc(javafx.event.ActionEvent e) {
         // sẽ hoàn thiện ở TODO 11
+    }
+
+    private void reset() {
+        // sẽ hoàn thiện ở TODO 12
+    }
+
+    private void log(String msg) {
+        // sẽ hoàn thiện ở TODO 12
     }
 }
