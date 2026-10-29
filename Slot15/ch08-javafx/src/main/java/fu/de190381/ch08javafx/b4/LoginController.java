@@ -58,5 +58,52 @@ public class LoginController {
         Platform.runLater(tfUsername::requestFocus);
     }
 
-    // handleLogin(), openWelcome(), handleForgot() sẽ thêm ở TODO 5–6
+    // TODO 5: Xử lý đăng nhập — validate, kiểm tra tài khoản, đếm số lần sai
+    @FXML
+    private void handleLogin(ActionEvent e) {
+        String user = tfUsername.getText().trim().toLowerCase();
+        String pass = pfPassword.getText();
+        String role = cbRole.getValue();
+
+        // Khoá sau 3 lần sai
+        if (failedCount >= 3) {
+            lblError.setText("Sai quá 3 lần. Vui lòng khởi động lại ứng dụng.");
+            return;
+        }
+        // Validate định dạng username
+        if (!user.matches("[a-z0-9_]{3,20}")) {
+            lblError.setText("Username 3–20 ký tự, chỉ chữ thường/số/_");
+            return;
+        }
+        // Kiểm tra tài khoản
+        String[] acc = ACCOUNTS.get(user);
+        if (acc == null || !acc[0].equals(pass)) {
+            failedCount++;
+            lblError.setText("Sai username hoặc mật khẩu (còn %d lần)".formatted(3 - failedCount));
+            pfPassword.clear();
+            return;
+        }
+        // Kiểm tra vai trò khớp tài khoản
+        if (!acc[1].equals(role)) {
+            lblError.setText("Vai trò không đúng với tài khoản");
+            return;
+        }
+        lblError.setText("");
+        openWelcome(user, role, (Stage) btnLogin.getScene().getWindow());
+    }
+
+    @FXML
+    private void handleForgot() {
+        TextInputDialog d = new TextInputDialog();
+        d.setHeaderText("Nhập email để lấy lại mật khẩu");
+        d.showAndWait().ifPresent(email -> {
+            if (email.matches("^[\\w.+-]+@[\\w-]+(\\.[\\w-]+)+$"))
+                AlertUtil.info("Đã gửi hướng dẫn tới " + email);
+            else
+                AlertUtil.warn("Email không hợp lệ");
+        });
+    }
+
+    // openWelcome() sẽ thêm ở TODO 6
+    private void openWelcome(String user, String role, Stage loginStage) {}
 }
