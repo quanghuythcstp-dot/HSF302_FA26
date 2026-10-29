@@ -1,8 +1,12 @@
 package fu.de190381.ch08javafx.b1;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -58,9 +62,29 @@ public class DrinkOrderApp extends Application {
         taLog.setTooltip(new Tooltip("Double-click để xóa nhật ký"));
         btnCalc.setDefaultButton(true);
 
-        stage.setScene(new Scene(new VBox(), 540, 580));
+        // TODO 3: Xếp layout
+        GridPane form = new GridPane();
+        form.setHgap(10);
+        form.setVgap(10);
+        form.addRow(0, new Label("Tên khách:"), tfName);
+        form.addRow(1, new Label("Đồ uống:"), cbDrink);
+        form.addRow(2, new Label("Size:"), new HBox(15, rbS, rbM, rbL));
+        form.addRow(3, new Label("Tùy chọn:"), new HBox(15, chkPearl, chkJelly, chkLessSugar));
+        form.addRow(4, new Label("Số lượng:"), tfQty);
+
+        HBox buttons = new HBox(10, btnCalc, btnClear);
+        buttons.setAlignment(Pos.CENTER_RIGHT);
+
+        Label title = new Label("ĐẶT ĐỒ UỐNG");
+        title.setStyle("-fx-font-size: 18; -fx-font-weight: bold;");
+
+        VBox root = new VBox(12, title, form, buttons, lblResult, new Label("Nhật ký sự kiện:"), taLog);
+        root.setPadding(new Insets(16));
+
+        stage.setScene(new Scene(root, 540, 580));
         stage.setTitle("B1 - Controls & Sự kiện");
         stage.show();
+        tfName.requestFocus();
     }
 
     public static void main(String[] args) { launch(args); }
