@@ -36,5 +36,27 @@ public class LoginController {
 
     private int failedCount = 0;
 
-    // initialize() và các handler sẽ thêm ở TODO 4–6
+    // TODO 4: initialize() — chạy SAU khi @FXML đã được inject (constructor thì chưa có!)
+    @FXML
+    public void initialize() {
+        // Hai ô password đồng bộ nội dung — gõ ở ô nào cũng cập nhật ô kia
+        tfPasswordVisible.textProperty().bindBidirectional(pfPassword.textProperty());
+
+        // Hiện/ẩn theo CheckBox:
+        // managed=false → node không chiếm chỗ trong layout khi ẩn
+        tfPasswordVisible.visibleProperty().bind(chkShow.selectedProperty());
+        tfPasswordVisible.managedProperty().bind(chkShow.selectedProperty());
+        pfPassword.visibleProperty().bind(chkShow.selectedProperty().not());
+        pfPassword.managedProperty().bind(chkShow.selectedProperty().not());
+
+        // Disable nút khi thiếu username, password hoặc chưa chọn vai trò
+        btnLogin.disableProperty().bind(
+                tfUsername.textProperty().isEmpty()
+                        .or(pfPassword.textProperty().isEmpty())
+                        .or(cbRole.valueProperty().isNull()));
+
+        Platform.runLater(tfUsername::requestFocus);
+    }
+
+    // handleLogin(), openWelcome(), handleForgot() sẽ thêm ở TODO 5–6
 }
