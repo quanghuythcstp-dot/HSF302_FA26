@@ -57,7 +57,7 @@ public class LoginLayoutApp extends Application {
         root.setTop(buildHeader());
         root.setCenter(buildCenter());
         root.setBottom(buildFooter());
-        return root;
+        return track(root);
     }
 
     // TODO 2: Header — HBox: logo | tiêu đề | SPACER giãn | version bên phải
@@ -79,7 +79,7 @@ public class LoginLayoutApp extends Application {
         header.setAlignment(Pos.CENTER_LEFT);
         header.setPadding(new Insets(10, 16, 10, 16));
         header.setStyle("-fx-background-color: #263238;");
-        return header;
+        return track(header);
     }
 
     // TODO 3: Center — GridPane (form) → VBox (card) → StackPane (căn giữa)
@@ -110,6 +110,7 @@ public class LoginLayoutApp extends Application {
         ColumnConstraints c1 = new ColumnConstraints();
         c1.setHgrow(Priority.ALWAYS);
         grid.getColumnConstraints().addAll(c0, c1);
+        track(grid);
 
         // 3b. HBox 2 nút giãn đều: maxWidth=MAX_VALUE + hgrow ALWAYS
         Button btnLogin = new Button("Đăng nhập");
@@ -121,6 +122,7 @@ public class LoginLayoutApp extends Application {
             HBox.setHgrow(b, Priority.ALWAYS);
         }
         HBox actions = new HBox(10, btnLogin, btnExit);
+        track(actions);
 
         // 3c. VBox card: rộng tối đa 380, không bị StackPane kéo giãn chiều cao
         VBox card = new VBox(14, lblTitle, grid, lblError, actions);
@@ -130,11 +132,13 @@ public class LoginLayoutApp extends Application {
         card.setMaxHeight(Region.USE_PREF_SIZE);
         card.setStyle("-fx-background-color: white; -fx-background-radius: 8;"
                 + "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 12, 0, 0, 3);");
+        track(card);
 
         // 3d. StackPane mặc định căn giữa node con
         StackPane center = new StackPane(card);
         center.setPadding(new Insets(20));
         center.setStyle("-fx-background-color: #eceff1;");
+        track(center);
 
         // TODO 4: Xử lý sự kiện đăng nhập, thoát, xóa lỗi
         btnLogin.setOnAction(e -> {
@@ -186,7 +190,7 @@ public class LoginLayoutApp extends Application {
         footer.setAlignment(Pos.CENTER_LEFT);
         footer.setPadding(new Insets(6, 16, 6, 16));
         footer.setStyle("-fx-background-color: #cfd8dc;");
-        return footer;
+        return track(footer);
     }
 
     // TODO 6: Trang chủ — BorderPane: top header, left menu VBox, center lời chào
@@ -215,12 +219,17 @@ public class LoginLayoutApp extends Application {
         menu.setPadding(new Insets(10));
         menu.setPrefWidth(160);
         menu.setStyle("-fx-background-color: #37474f;");
+        track(menu);
 
         BorderPane root = new BorderPane(new StackPane(lblHello));
         root.setTop(buildHeader());
         root.setLeft(menu);
-        return root;
+        return track(root);
     }
 
-    public static void main(String[] args) { launch(args); }
+    // TODO 7: track() — đăng ký Region vào danh sách để bật/tắt viền debug
+    private <T extends Region> T track(T region) {
+        containers.add(region);
+        return region;
+    }
 }
