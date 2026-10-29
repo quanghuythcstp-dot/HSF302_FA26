@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.String?>
+
+<!-- TODO 1: Form đăng nhập — GridPane 2 cột, items ComboBox khai báo trong FXML -->
+<GridPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="fu.de190381.ch08javafx.b4.LoginController"
+          hgap="10" vgap="12"
+          styleClass="login-pane" stylesheets="@login.css">
+    <padding><Insets top="24" right="28" bottom="24" left="28"/></padding>
+    <columnConstraints>
+        <ColumnConstraints minWidth="90"/>
+        <ColumnConstraints hgrow="ALWAYS" minWidth="200"/>
+    </columnConstraints>
+
+    <!-- Tiêu đề -->
+    <Label text="ĐĂNG NHẬP" styleClass="title" GridPane.columnSpan="2"/>
+
+    <!-- Username -->
+    <Label text="Username" GridPane.rowIndex="1"/>
+    <TextField fx:id="tfUsername" promptText="student"
+               GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+    <!-- Password — StackPane chứa cả PasswordField và TextField (hiện/ẩn) -->
+    <Label text="Password" GridPane.rowIndex="2"/>
+    <StackPane GridPane.rowIndex="2" GridPane.columnIndex="1">
+        <PasswordField fx:id="pfPassword"/>
+        <TextField fx:id="tfPasswordVisible" visible="false" managed="false"/>
+    </StackPane>
+
+    <!-- CheckBox hiện mật khẩu -->
+    <CheckBox fx:id="chkShow" text="Hiện mật khẩu"
+              GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+    <!-- Vai trò — items khai báo trong FXML, không cần code Java -->
+    <Label text="Vai trò" GridPane.rowIndex="4"/>
+    <ComboBox fx:id="cbRole" promptText="Chọn vai trò" maxWidth="Infinity"
+              GridPane.rowIndex="4" GridPane.columnIndex="1">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="Sinh viên"/>
+                <String fx:value="Giảng viên"/>
+            </FXCollections>
+        </items>
+    </ComboBox>
+
+    <!-- Label lỗi -->
+    <Label fx:id="lblError" styleClass="error" wrapText="true"
+           GridPane.rowIndex="5" GridPane.columnSpan="2"/>
+
+    <!-- Nút đăng nhập + Hyperlink quên mật khẩu -->
+    <HBox spacing="12" alignment="CENTER_LEFT"
+          GridPane.rowIndex="6" GridPane.columnIndex="1">
+        <Button fx:id="btnLogin" text="Đăng nhập" styleClass="primary-btn"
+                defaultButton="true" onAction="#handleLogin"/>
+        <Hyperlink text="Quên mật khẩu?" onAction="#handleForgot"/>
+    </HBox>
+</GridPane>
