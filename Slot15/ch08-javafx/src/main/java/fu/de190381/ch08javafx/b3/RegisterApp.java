@@ -186,25 +186,75 @@ public class RegisterApp extends Application {
         });
     }
 
-    // Placeholder các method sẽ hoàn thiện ở TODO 5–8
-    private boolean vFullName()  { return true; }
-    private boolean vEmail()     { return true; }
-    private boolean vUsername()  { return true; }
-    private boolean vPassword()  { return true; }
-    private boolean vConfirm()   { return true; }
-    private boolean vGender()    { return true; }
-    private boolean vDob()       { return true; }
-    private boolean vMajor()     { return true; }
-    private void    updateStrength(String s) {}
-    private void    handleRegister()         {}
-    private void    resetForm()              {}
+    // TODO 5: Validator — kiểm tra 1 field, ghi/xóa lỗi, trả về true nếu hợp lệ
+    private boolean check(Label err, boolean ok, String msg) {
+        err.setText(ok ? "" : msg);
+        return ok;
+    }
+
+    private boolean vFullName() {
+        // \p{L}: chữ cái mọi ngôn ngữ; \p{M}: dấu kết hợp (bộ gõ Unicode tổ hợp)
+        return check(errFullName,
+                tfFullName.getText().trim().matches("[\\p{L}\\p{M} ]{3,50}"),
+                "Họ tên 3–50 ký tự, chỉ gồm chữ cái và khoảng trắng");
+    }
+
+    private boolean vEmail() {
+        return check(errEmail,
+                tfEmail.getText().trim().matches("^[\\w.+-]+@[\\w-]+(\\.[\\w-]+)+$"),
+                "Email không hợp lệ (VD: abc@example.com)");
+    }
+
+    private boolean vUsername() {
+        String u = tfUsername.getText().trim().toLowerCase();
+        if (!u.matches("[a-z0-9_]{3,20}"))
+            return check(errUsername, false, "Username 3–20 ký tự: chữ thường, số, dấu _");
+        return check(errUsername, !UserStore.exists(u), "Username đã tồn tại");
+    }
+
+    private boolean vPassword() {
+        return check(errPassword,
+                pfPassword.getText().matches(STRONG_PASSWORD),
+                "Mật khẩu ≥ 8 ký tự, gồm chữ hoa, chữ thường, số và ký tự đặc biệt");
+    }
+
+    private boolean vConfirm() {
+        String c = pfConfirm.getText();
+        return check(errConfirm,
+                !c.isEmpty() && c.equals(pfPassword.getText()),
+                "Mật khẩu xác nhận không khớp");
+    }
+
+    private boolean vGender() {
+        return check(errGender, tgGender.getSelectedToggle() != null, "Vui lòng chọn giới tính");
+    }
+
+    private boolean vDob() {
+        LocalDate d = dpDob.getValue();
+        if (d == null) return check(errDob, false, "Vui lòng chọn ngày sinh");
+        if (d.isAfter(LocalDate.now()))
+            return check(errDob, false, "Ngày sinh không được ở tương lai");
+        return check(errDob,
+                Period.between(d, LocalDate.now()).getYears() >= 16,
+                "Phải đủ 16 tuổi trở lên");
+    }
+
+    private boolean vMajor() {
+        return check(errMajor, cbMajor.getValue() != null, "Vui lòng chọn ngành");
+    }
 
     // Helper tạo label lỗi inline
-    private static Label err() {        Label l = new Label();
+    private static Label err() {
+        Label l = new Label();
         l.setStyle("-fx-text-fill: #d93025; -fx-font-size: 11;");
         l.setWrapText(true);
         return l;
     }
+
+    // Placeholder — sẽ hoàn thiện ở TODO 6–8
+    private void updateStrength(String s) {}
+    private void handleRegister()         {}
+    private void resetForm()              {}
 
     public static void main(String[] args) { launch(args); }
 }
