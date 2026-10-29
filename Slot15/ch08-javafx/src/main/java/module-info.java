@@ -13,7 +13,7 @@ module fu.de190381.ch08javafx {
     // → thêm "exports <package>" cho mỗi package chứa class Application (b1...b6, t1...t6)
     exports fu.de190381.ch08javafx;
     exports fu.de190381.ch08javafx.b1;   // B1 — UI viết bằng code (không cần opens)
-    exports fu.de190381.ch08javafx.b2;   // B2 — UI viết bằng code (không cần opens)
+    exports fu.de190381.ch08javafx.b2;   // B2 — Layout & Form đăng nhập, code thuần (không cần opens)
 
     // Lưu ý: package common (AlertUtil) dùng chung trong cùng module → KHÔNG cần exports/opens.
 }
