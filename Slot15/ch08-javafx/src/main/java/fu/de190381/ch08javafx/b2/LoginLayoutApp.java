@@ -56,7 +56,7 @@ public class LoginLayoutApp extends Application {
         BorderPane root = new BorderPane();
         root.setTop(buildHeader());
         root.setCenter(buildCenter());
-        root.setBottom(new Label("(footer)"));
+        root.setBottom(buildFooter());
         return root;
     }
 
@@ -171,6 +171,22 @@ public class LoginLayoutApp extends Application {
 
         Platform.runLater(() -> (tfUser.getText().isEmpty() ? tfUser : pfPass).requestFocus());
         return center;
+    }
+
+    // TODO 5: Footer — HBox: CheckBox debug | spacer | bản quyền
+    private Node buildFooter() {
+        CheckBox chkDebug = new CheckBox("Hiện viền layout (debug)");
+        chkDebug.setOnAction(e -> containers.forEach(
+                r -> r.setBorder(chkDebug.isSelected() ? DEBUG_BORDER : null)));
+
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        HBox footer = new HBox(10, chkDebug, spacer, new Label("© 2026 HSF302 — Chapter 08"));
+        footer.setAlignment(Pos.CENTER_LEFT);
+        footer.setPadding(new Insets(6, 16, 6, 16));
+        footer.setStyle("-fx-background-color: #cfd8dc;");
+        return footer;
     }
 
     // TODO 6: Trang chủ — placeholder, sẽ hoàn thiện ở TODO 6
