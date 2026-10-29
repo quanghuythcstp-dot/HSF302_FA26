@@ -34,6 +34,12 @@ public class LoginLayoutApp extends Application {
     private String rememberedUser;
     private final List<Region> containers = new ArrayList<>();
 
+    // Control form — khai báo field để buildCenter() và handler cùng truy cập
+    private TextField tfUser;
+    private PasswordField pfPass;
+    private CheckBox chkRemember;
+    private Label lblError;
+
     @Override
     public void start(Stage stage) {
         scene = new Scene(buildLoginView(), 680, 480);
@@ -54,18 +60,40 @@ public class LoginLayoutApp extends Application {
         return root;
     }
 
+    // TODO 2: Header — HBox: logo | tiêu đề | SPACER giãn | version bên phải
+    private Node buildHeader() {
+        Label logo = new Label("HSF");
+        logo.setStyle("-fx-background-color: #f27024; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 4 8;");
+
+        Label title = new Label("Hệ thống quản lý sinh viên");
+        title.setStyle("-fx-font-size: 16; -fx-text-fill: white;");
+
+        Label version = new Label("v1.0");
+        version.setStyle("-fx-text-fill: #cfd8dc;");
+
+        // Spacer: setHgrow(ALWAYS) → chiếm hết chỗ trống → đẩy "v1.0" sang phải
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        HBox header = new HBox(10, logo, title, spacer, version);
+        header.setAlignment(Pos.CENTER_LEFT);
+        header.setPadding(new Insets(10, 16, 10, 16));
+        header.setStyle("-fx-background-color: #263238;");
+        return header;
+    }
+
     // TODO 3: Center — GridPane (form) → VBox (card) → StackPane (căn giữa)
     private Node buildCenter() {
         Label lblTitle = new Label("ĐĂNG NHẬP");
         lblTitle.setStyle("-fx-font-size: 20; -fx-font-weight: bold;");
 
-        TextField tfUser = new TextField(rememberedUser == null ? "" : rememberedUser);
+        tfUser = new TextField(rememberedUser == null ? "" : rememberedUser);
         tfUser.setPromptText("Username");
-        PasswordField pfPass = new PasswordField();
+        pfPass = new PasswordField();
         pfPass.setPromptText("Password");
-        CheckBox chkRemember = new CheckBox("Ghi nhớ đăng nhập");
+        chkRemember = new CheckBox("Ghi nhớ đăng nhập");
         chkRemember.setSelected(rememberedUser != null);
-        Label lblError = new Label();
+        lblError = new Label();
         lblError.setStyle("-fx-text-fill: #d93025;");
         lblError.setWrapText(true);
 
@@ -108,28 +136,46 @@ public class LoginLayoutApp extends Application {
         center.setPadding(new Insets(20));
         center.setStyle("-fx-background-color: #eceff1;");
 
+        // TODO 4: Xử lý sự kiện đăng nhập, thoát, xóa lỗi
+        btnLogin.setOnAction(e -> {
+            String user = tfUser.getText().trim().toLowerCase();
+            String pass = pfPass.getText();
+            // Validate rỗng
+            if (user.isEmpty() || pass.isEmpty()) {
+                lblError.setText("Vui lòng nhập đầy đủ username và password");
+                (user.isEmpty() ? tfUser : pfPass).requestFocus();
+                return;
+            }
+            // Kiểm tra tài khoản
+            if (!pass.equals(ACCOUNTS.get(user))) {
+                lblError.setText("Sai username hoặc mật khẩu");
+                pfPass.clear();
+                pfPass.requestFocus();
+                return;
+            }
+            // Ghi nhớ đăng nhập
+            rememberedUser = chkRemember.isSelected() ? user : null;
+            // CHUYỂN MÀN HÌNH: đổi root, giữ nguyên Stage & Scene
+            scene.setRoot(buildHomeView(user));
+        });
+
+        btnExit.setOnAction(e -> {
+            if (AlertUtil.confirm("Bạn muốn thoát ứng dụng?")) Platform.exit();
+        });
+
+        // Gõ lại → xóa thông báo lỗi
+        tfUser.textProperty().addListener((obs, o, n) -> lblError.setText(""));
+        pfPass.textProperty().addListener((obs, o, n) -> {
+            if (!n.isEmpty()) lblError.setText("");
+        });
+
         Platform.runLater(() -> (tfUser.getText().isEmpty() ? tfUser : pfPass).requestFocus());
         return center;
     }
-    private Node buildHeader() {
-        Label logo = new Label("HSF");
-        logo.setStyle("-fx-background-color: #f27024; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 4 8;");
 
-        Label title = new Label("Hệ thống quản lý sinh viên");
-        title.setStyle("-fx-font-size: 16; -fx-text-fill: white;");
-
-        Label version = new Label("v1.0");
-        version.setStyle("-fx-text-fill: #cfd8dc;");
-
-        // Spacer: setHgrow(ALWAYS) → chiếm hết chỗ trống → đẩy "v1.0" sang phải
-        Region spacer = new Region();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
-
-        HBox header = new HBox(10, logo, title, spacer, version);
-        header.setAlignment(Pos.CENTER_LEFT);
-        header.setPadding(new Insets(10, 16, 10, 16));
-        header.setStyle("-fx-background-color: #263238;");
-        return header;
+    // TODO 6: Trang chủ — placeholder, sẽ hoàn thiện ở TODO 6
+    private Parent buildHomeView(String user) {
+        return new StackPane(new Label("Trang chủ — " + user + " (TODO 6)"));
     }
 
     public static void main(String[] args) { launch(args); }
