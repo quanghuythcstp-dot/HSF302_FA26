@@ -38,6 +38,26 @@ public class DrinkOrderApp extends Application {
 
     @Override
     public void start(Stage stage) {
+        // TODO 2: Cấu hình control
+        tfName.setPromptText("Nhập tên khách hàng");
+        cbDrink.getItems().addAll(MENU.keySet());
+        cbDrink.setPromptText("-- Chọn đồ uống --");
+        cbDrink.setMaxWidth(Double.MAX_VALUE);
+
+        rbS.setToggleGroup(tgSize);
+        rbM.setToggleGroup(tgSize);
+        rbL.setToggleGroup(tgSize);
+        rbS.setUserData(0);
+        rbM.setUserData(5_000);
+        rbL.setUserData(10_000);
+        tgSize.selectToggle(rbM);
+
+        tfQty.setPrefColumnCount(4);
+        taLog.setEditable(false);
+        taLog.setPrefRowCount(8);
+        taLog.setTooltip(new Tooltip("Double-click để xóa nhật ký"));
+        btnCalc.setDefaultButton(true);
+
         stage.setScene(new Scene(new VBox(), 540, 580));
         stage.setTitle("B1 - Controls & Sự kiện");
         stage.show();
