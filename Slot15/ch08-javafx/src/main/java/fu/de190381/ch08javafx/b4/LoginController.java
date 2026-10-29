@@ -104,6 +104,22 @@ public class LoginController {
         });
     }
 
-    // openWelcome() sẽ thêm ở TODO 6
-    private void openWelcome(String user, String role, Stage loginStage) {}
+    // TODO 6: Mở FXML thứ 2 và TRUYỀN DỮ LIỆU qua controller
+    // loader.getController() trả về WelcomeController SAU khi load() → gọi setter để truyền dữ liệu
+    private void openWelcome(String user, String role, Stage loginStage) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("welcome-view.fxml"));
+            Parent root = loader.load();
+            WelcomeController ctrl = loader.getController();
+            ctrl.setUser(user, role);
+
+            Stage stage = new Stage();
+            stage.setTitle("Chào mừng");
+            stage.setScene(new Scene(root, 360, 200));
+            stage.show();
+            loginStage.close();
+        } catch (IOException ex) {
+            AlertUtil.error("Không mở được màn hình chào mừng: " + ex.getMessage());
+        }
+    }
 }
