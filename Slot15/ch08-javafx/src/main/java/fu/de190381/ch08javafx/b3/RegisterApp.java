@@ -293,7 +293,25 @@ public class RegisterApp extends Application {
         resetForm();
         scene.setRoot(buildLoginView(u.username())); // sang đăng nhập, điền sẵn username
     }
-    private void resetForm()              {}
+    // TODO 8: Đưa form về trạng thái ban đầu — xóa lỗi SAU CÙNG vì listener 4b
+    // vừa chạy khi reset giá trị và đã ghi lỗi "Vui lòng chọn..."
+    private void resetForm() {
+        Stream.of(tfFullName, tfEmail, tfUsername, pfPassword, pfConfirm)
+              .forEach(TextInputControl::clear);
+        tgGender.selectToggle(null);
+        dpDob.setValue(null);
+        cbMajor.setValue(null);
+        Stream.of(chkSport, chkMusic, chkGame, chkReading, chkAgree)
+              .forEach(c -> c.setSelected(false));
+        // KHÔNG gọi btnRegister.setDisable(true): property đã bind → RuntimeException
+        // Bỏ tích chkAgree là đủ, binding tự disable nút.
+
+        // Xóa lỗi sau cùng
+        Stream.of(errFullName, errEmail, errUsername, errPassword,
+                  errConfirm, errGender, errDob, errMajor)
+              .forEach(l -> l.setText(""));
+        tfFullName.requestFocus();
+    }
 
     public static void main(String[] args) { launch(args); }
 }
