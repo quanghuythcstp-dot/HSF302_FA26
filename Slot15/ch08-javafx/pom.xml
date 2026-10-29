@@ -72,7 +72,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <!-- Đổi theo bài đang chạy -->
-                            <mainClass>fu.de190381.ch08javafx/fu.de190381.ch08javafx.b2.LoginLayoutApp</mainClass>
+                            <mainClass>fu.de190381.ch08javafx/fu.de190381.ch08javafx.b3.RegisterApp</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>

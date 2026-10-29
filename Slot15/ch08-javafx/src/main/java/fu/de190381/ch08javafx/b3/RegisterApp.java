@@ -150,9 +150,58 @@ public class RegisterApp extends Application {
         grid.add(error == null ? input : new VBox(2, input, error), 1, row);
     }
 
-    // Placeholder cho buildLoginView — sẽ hoàn thiện ở TODO 9
+    // TODO 9: Form đăng nhập — kiểm tra với UserStore, Hyperlink quay lại đăng ký
     private Parent buildLoginView(String prefillUser) {
-        return new StackPane(new Label("(login — TODO 9)"));
+        Label title = new Label("ĐĂNG NHẬP");
+        title.setStyle("-fx-font-size: 20; -fx-font-weight: bold; -fx-text-fill: #1a73e8;");
+
+        TextField tfUser = new TextField(prefillUser);
+        tfUser.setPromptText("Username");
+        PasswordField pfPass = new PasswordField();
+        pfPass.setPromptText("Password");
+        Label lblMsg = new Label();
+        lblMsg.setStyle("-fx-text-fill: #d93025;");
+
+        Button btnLogin = new Button("Đăng nhập");
+        btnLogin.setDefaultButton(true);
+        btnLogin.setMaxWidth(Double.MAX_VALUE);
+        Hyperlink linkRegister = new Hyperlink("Chưa có tài khoản? Đăng ký");
+
+        btnLogin.setOnAction(e -> {
+            if (tfUser.getText().isBlank() || pfPass.getText().isEmpty()) {
+                lblMsg.setText("Nhập đầy đủ username và password");
+                return;
+            }
+            UserStore.login(tfUser.getText(), pfPass.getText()).ifPresentOrElse(
+                    u -> {
+                        lblMsg.setText("");
+                        AlertUtil.info("Xin chào %s!\nNgành: %s"
+                                .formatted(u.fullName(), u.major()));
+                    },
+                    () -> { lblMsg.setText("Sai username hoặc mật khẩu"); pfPass.clear(); });
+        });
+        // Quay lại form đăng ký — giữ dữ liệu đang nhập (dùng lại registerView đã tạo)
+        linkRegister.setOnAction(e -> scene.setRoot(registerView));
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10); grid.setVgap(10);
+        grid.addRow(0, new Label("Username"), tfUser);
+        grid.addRow(1, new Label("Password"), pfPass);
+        ColumnConstraints c0 = new ColumnConstraints(80);
+        ColumnConstraints c1 = new ColumnConstraints();
+        c1.setHgrow(Priority.ALWAYS);
+        grid.getColumnConstraints().addAll(c0, c1);
+
+        VBox box = new VBox(12, title, grid, lblMsg, btnLogin, linkRegister);
+        box.setAlignment(Pos.CENTER);
+        box.setMaxWidth(340);
+
+        StackPane root = new StackPane(box);
+        root.setPadding(new Insets(20));
+
+        Node focus = prefillUser.isEmpty() ? tfUser : pfPass;
+        Platform.runLater(focus::requestFocus);
+        return root;
     }
 
     // TODO 4: Đăng ký sự kiện
