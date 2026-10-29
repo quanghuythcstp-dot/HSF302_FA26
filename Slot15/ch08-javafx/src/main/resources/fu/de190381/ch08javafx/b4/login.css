@@ -1,0 +1,49 @@
+/* TODO 2: CSS cho form đăng nhập B4
+   Áp dụng qua stylesheets="@login.css" trong login-view.fxml
+   Lưu ý: thuộc tính JavaFX CSS có tiền tố -fx-
+*/
+
+/* Khung chính */
+.login-pane {
+    -fx-background-color: linear-gradient(to bottom, #ffffff, #e8f0fe);
+    -fx-font-family: "Segoe UI";
+}
+
+/* Tiêu đề ĐĂNG NHẬP */
+.title {
+    -fx-font-size: 22;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a73e8;
+}
+
+/* Label lỗi */
+.error {
+    -fx-text-fill: #d93025;
+}
+
+/* Viền xanh khi ô nhập được focus */
+.text-field:focused,
+.password-field:focused {
+    -fx-border-color: #1a73e8;
+    -fx-border-radius: 3;
+}
+
+/* Nút Đăng nhập */
+.primary-btn {
+    -fx-background-color: #1a73e8;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 8 18;
+    -fx-background-radius: 5;
+    -fx-cursor: hand;
+}
+
+/* Hover: màu đậm hơn */
+.primary-btn:hover {
+    -fx-background-color: #1558b0;
+}
+
+/* Disabled: mờ đi */
+.primary-btn:disabled {
+    -fx-opacity: 0.5;
+}
