@@ -1,6 +1,8 @@
 package fu.de190381.ch08javafx.b1;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -100,9 +102,22 @@ public class DrinkOrderApp extends Application {
             reset();
             log("Bấm Làm lại");
         });
+
+        // TODO 6: Cách 3 — anonymous class
+        cbDrink.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                String d = cbDrink.getValue();
+                if (d != null) {  // reset() gọi setValue(null) cũng kích hoạt → phải kiểm tra null
+                    log("Chọn đồ uống: %s (%,d đ)".formatted(d, MENU.get(d)));
+                }
+            }
+        });
+        // Enter ở tfName → chuyển focus sang ComboBox (KHÔNG kích hoạt defaultButton)
+        tfName.setOnAction(e -> cbDrink.requestFocus());
     }
 
-    private void handleCalc(javafx.event.ActionEvent e) {
+    private void handleCalc(ActionEvent e) {
         // sẽ hoàn thiện ở TODO 11
     }
 
