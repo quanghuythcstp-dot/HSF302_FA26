@@ -63,6 +63,7 @@ public class RegisterApp extends Application {
     @Override
     public void start(Stage stage) {
         setupControls();
+        registerEvents();
         registerView = buildRegisterView();
         scene = new Scene(registerView, 580, 660);
         stage.setScene(scene);
@@ -153,6 +154,50 @@ public class RegisterApp extends Application {
     private Parent buildLoginView(String prefillUser) {
         return new StackPane(new Label("(login — TODO 9)"));
     }
+
+    // TODO 4: Đăng ký sự kiện
+    private void registerEvents() {
+        // 4a. Ô gõ chữ: validate khi RỜI KHỎI ô — không làm phiền khi đang gõ
+        onFocusLost(tfFullName, this::vFullName);
+        onFocusLost(tfEmail,    this::vEmail);
+        onFocusLost(tfUsername, this::vUsername);
+        onFocusLost(pfPassword, this::vPassword);
+        onFocusLost(pfConfirm,  this::vConfirm);
+
+        // 4b. Control dạng chọn: validate ngay khi giá trị đổi
+        tgGender.selectedToggleProperty().addListener((obs, o, n) -> vGender());
+        dpDob.valueProperty().addListener((obs, o, n) -> vDob());
+        cbMajor.valueProperty().addListener((obs, o, n) -> vMajor());
+
+        // 4c. Độ mạnh mật khẩu — cập nhật theo TỪNG PHÍM gõ
+        pfPassword.textProperty().addListener((obs, o, n) -> updateStrength(n));
+
+        // 4d. Nút Đăng ký / Làm lại
+        btnRegister.setOnAction(e -> handleRegister());
+        btnReset.setOnAction(e -> {
+            if (AlertUtil.confirm("Xóa toàn bộ dữ liệu đã nhập?")) resetForm();
+        });
+    }
+
+    // Helper: validate khi node mất focus
+    private void onFocusLost(Node node, BooleanSupplier validator) {
+        node.focusedProperty().addListener((obs, wasFocused, isFocused) -> {
+            if (!isFocused) validator.getAsBoolean();
+        });
+    }
+
+    // Placeholder các method sẽ hoàn thiện ở TODO 5–8
+    private boolean vFullName()  { return true; }
+    private boolean vEmail()     { return true; }
+    private boolean vUsername()  { return true; }
+    private boolean vPassword()  { return true; }
+    private boolean vConfirm()   { return true; }
+    private boolean vGender()    { return true; }
+    private boolean vDob()       { return true; }
+    private boolean vMajor()     { return true; }
+    private void    updateStrength(String s) {}
+    private void    handleRegister()         {}
+    private void    resetForm()              {}
 
     // Helper tạo label lỗi inline
     private static Label err() {        Label l = new Label();
