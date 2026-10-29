@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<!-- TODO 7: Màn hình chào mừng sau khi đăng nhập thành công -->
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="fu.de190381.ch08javafx.b4.WelcomeController"
+      alignment="CENTER" spacing="24"
+      style="-fx-background-color: #e8f0fe; -fx-font-family: 'Segoe UI';">
+    <padding><Insets top="40" right="40" bottom="40" left="40"/></padding>
+
+    <!-- lblWelcome được inject bởi FXMLLoader, nội dung set qua setUser() -->
+    <Label fx:id="lblWelcome" text="Xin chào!"
+           style="-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: #1a73e8;"/>
+
+    <Label text="Đăng nhập thành công. Chào mừng bạn đến với hệ thống."
+           style="-fx-text-fill: #444; -fx-font-size: 14;" wrapText="true"/>
+
+    <Button text="Đăng xuất" onAction="#handleLogout"
+            style="-fx-background-color: #d93025; -fx-text-fill: white;
+                   -fx-font-weight: bold; -fx-padding: 8 20; -fx-background-radius: 5;
+                   -fx-cursor: hand;"/>
+</VBox>
